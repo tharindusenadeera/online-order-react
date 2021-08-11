@@ -6,8 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { Dashboard } from "./pages/Dashboard";
 
+const store={};
+
 ReactDOM.render(
-  <Provider>
+  // <Provider store={store}>
     <App>
       <Router>
         <Switch>
@@ -16,8 +18,8 @@ ReactDOM.render(
           </React.Fragment>
         </Switch>
       </Router>
-    </App>
-  </Provider>,
+    </App>,
+  // </Provider>,
   document.getElementById("root")
 );
 
