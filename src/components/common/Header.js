@@ -1,6 +1,11 @@
 import React from "react";
 
 export const Header = (props) => {
+  const { onclick } = props;
+
+  const handleonClick = () => {
+    onclick();
+  }
   return (
     <header id="header" className="light">
       <div className="container">
@@ -166,9 +171,10 @@ export const Header = (props) => {
           </div>
           <div className="col-md-2">
             <a
-              href="#"
+              // href="#"
               className="module module-cart right"
               data-toggle="panel-cart"
+              onClick={handleonClick}
             >
               <span className="cart-icon">
                 <i className="ti ti-shopping-cart"></i>

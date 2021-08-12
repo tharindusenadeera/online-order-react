@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { Drawer } from "antd";
 import { Header } from "../components/common/Header";
 import { Footer } from "../components/common/Footer";
 import { HeaderMobile } from "../components/common/HeaderMobile";
 import { ShoppingCart } from "../components/common/ShoppingCart";
 
 export const ConfirmationPage = (props) => {
+  const [visible, setVisible] = useState(false);
+  const [placement, setPlacement] = useState("");
+
+  const showDrawer = () => {
+    setVisible(true);
+  };
+
+  const onClose = () => {
+    setVisible(false);
+  };
+
+  const onChange = (e) => {
+    setPlacement(e.target.value);
+  };
+
   return (
     <div id="body-wrapper" className="">
       {/* <!-- Header --> */}
-      <Header />
+      <Header onclick={showDrawer}/>
       {/* <!-- Header / End --> */}
 
       {/* <!-- Header --> */}
@@ -47,7 +63,6 @@ export const ConfirmationPage = (props) => {
       {/* <!-- Content / End --> */}
 
       {/* <!-- Panel Cart --> */}
-      <ShoppingCart />
 
       {/* <!-- Panel Mobile --> */}
       <nav id="panel-mobile">
@@ -94,7 +109,16 @@ export const ConfirmationPage = (props) => {
           </a>
         </div>
       </nav>
-
+      <Drawer
+        title="Basic Drawer"
+        placement={'right'}
+        closable={false}
+        onClose={onClose}
+        visible={visible}
+        key={'right'}
+      >
+        <ShoppingCart />
+      </Drawer>
       {/* <!-- Body Overlay --> */}
       <div id="body-overlay"></div>
     </div>

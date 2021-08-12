@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { Dashboard } from "./pages/Dashboard";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
+import "antd/dist/antd.css";
 
 ReactDOM.render(
   // <Provider store={store}>

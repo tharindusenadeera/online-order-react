@@ -2,7 +2,7 @@ import React from "react";
 
 export const ShoppingCart = (props) => {
   return (
-    <div id="panel-cart">
+    <div id="">
       <div className="panel-cart-container">
         <div className="panel-cart-title">
           <h5 className="title">Your Cart</h5>
