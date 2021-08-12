@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { Dashboard } from "./pages/Dashboard";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
+import { CheckoutPage } from "./pages/CheckoutPage";
 import "antd/dist/antd.css";
 
 ReactDOM.render(
@@ -16,6 +17,7 @@ ReactDOM.render(
           <React.Fragment>
             <Route exact path="/" component={Dashboard} />
             <Route path="/confirmed" component={ConfirmationPage} />
+            <Route path="/checkout" component={CheckoutPage} />
           </React.Fragment>
         </Switch>
       </Router>
