@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { Dashboard } from "./pages/Dashboard";
-
-const store={};
+import { ConfirmationPage } from "./pages/ConfirmationPage";
 
 ReactDOM.render(
   // <Provider store={store}>
@@ -15,6 +14,7 @@ ReactDOM.render(
         <Switch>
           <React.Fragment>
             <Route exact path="/" component={Dashboard} />
+            <Route path="/confirmed" component={ConfirmationPage} />
           </React.Fragment>
         </Switch>
       </Router>
