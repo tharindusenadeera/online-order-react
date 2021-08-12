@@ -8,6 +8,8 @@ import { Dashboard } from "./pages/Dashboard";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import "antd/dist/antd.css";
+import "./index.css";
+import { MenuItemPage } from "./pages/MenuItemPage";
 
 ReactDOM.render(
   // <Provider store={store}>
@@ -15,7 +17,7 @@ ReactDOM.render(
       <Router>
         <Switch>
           <React.Fragment>
-            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/" component={MenuItemPage} />
             <Route path="/confirmed" component={ConfirmationPage} />
             <Route path="/checkout" component={CheckoutPage} />
           </React.Fragment>
