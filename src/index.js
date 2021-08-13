@@ -4,10 +4,12 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
-import { Dashboard } from "./pages/Dashboard";
+import "antd/dist/antd.css";
+import "./index.css";
+import { ItemDetail } from "./pages/ItemDetail";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
-import "antd/dist/antd.css";
+import { MenuItemPage } from "./pages/MenuItemPage";
 
 ReactDOM.render(
   // <Provider store={store}>
@@ -15,9 +17,10 @@ ReactDOM.render(
       <Router>
         <Switch>
           <React.Fragment>
-            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/" component={MenuItemPage} />
             <Route path="/confirmed" component={ConfirmationPage} />
             <Route path="/checkout" component={CheckoutPage} />
+            <Route path="/item" component={ItemDetail} />
           </React.Fragment>
         </Switch>
       </Router>
