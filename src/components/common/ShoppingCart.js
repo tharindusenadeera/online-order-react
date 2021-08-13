@@ -4,12 +4,12 @@ export const ShoppingCart = (props) => {
   return (
     <div id="">
       <div className="panel-cart-container">
-        <div className="panel-cart-title">
+        {/* <div className="panel-cart-title">
           <h5 className="title">Your Cart</h5>
           <button className="close" data-toggle="panel-cart">
             <i className="ti ti-close"></i>
           </button>
-        </div>
+        </div> */}
         <div className="panel-cart-content cart-details">
           <table className="cart-table">
             <tbody>

@@ -1,9 +1,15 @@
 import React, { Fragment } from "react";
 import "./App.css";
+import GlobalStyle from "./utils/globalStyles";
 
 class App extends React.Component {
   render() {
-    return <Fragment>{this.props.children}</Fragment>;
+    return (
+      <Fragment>
+        <GlobalStyle />
+        {this.props.children}
+      </Fragment>
+    );
   }
 }
 
