@@ -16,7 +16,7 @@ const colors = {
 };
 
 const fonts = {
-  default: "'Montserrat', sans-serif",
+  default: "'Raleway','Nunito Sans', sans-serif",
 };
 
 const breakpoints = {

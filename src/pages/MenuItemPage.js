@@ -1,6 +1,7 @@
 import React from "react";
 import { Footer } from "../components/common/Footer";
 import { Header } from "../components/common/Header";
+import { AddToCartModal } from "../components/items/AddToCartModal";
 
 export const MenuItemPage = (props) => {
   return (
@@ -86,7 +87,8 @@ export const MenuItemPage = (props) => {
                             data-action="open-cart-modal"
                             data-id="1"
                           >
-                            <span>Add to cart</span>
+                            {/* <span>Add to cart</span> */}
+                            <AddToCartModal />
                           </button>
                         </div>
                       </div>
