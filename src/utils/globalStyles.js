@@ -13,7 +13,18 @@ const GlobalStyle = createGlobalStyle`
   }
 
   //Ant Modal
-  .Ant-ustom-modal{
+  .ant-custom-modal{
+    top: 25px;
+    .ant-modal-close{
+      color: ${theme.colors.white};
+      opacity: 0.75;
+      &:hover{
+        opacity: 1;
+      }
+      &:focus{
+        outline: unset;
+      }
+    }
     .ant-modal-body{
       padding: unset;
     }

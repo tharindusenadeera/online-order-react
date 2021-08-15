@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 import styled from "styled-components";
 import { CartCollapse } from "./addToCart/CartCollapse";
+import theme from "../../utils/theme";
 
 const ModalWrapper = styled.div``;
 
-const ContentWrapper = styled.div``;
+const ContentWrapper = styled.div`
+  .modal-header {
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+
+    .modal-title {
+      font-weight: 400;
+      color: ${theme.colors.white};
+    }
+  }
+`;
 
 export const AddToCartModal = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -72,15 +83,19 @@ export const AddToCartModal = (props) => {
 
   return (
     <ModalWrapper>
-      <Button type="primary" onClick={showModal}>
-        Add to cart
-      </Button>
+      <button
+        type="link"
+        className="btn btn-outline-secondary btn-sm"
+        onClick={showModal}
+      >
+        <span>ADD TO CART</span>
+      </button>
       <Modal
         //title="Basic Modal"
         visible={isModalVisible}
         // onOk={handleOk}
         onCancel={handleCancel}
-        className="Ant-ustom-modal"
+        className="ant-custom-modal"
         footer={null}
       >
         <ModalContent />

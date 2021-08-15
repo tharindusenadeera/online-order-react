@@ -6,6 +6,8 @@ const defaultColors = {
   secondaryHover: "#8EDE71",
   white: "#ffffff",
   black: "#3A3A3A",
+  gold: "#ddae71",
+  border: "#d9d9d9",
 };
 
 const colors = {
@@ -13,6 +15,9 @@ const colors = {
   primaryHover: defaultColors.primaryHover,
   primaryBackground: defaultColors.primaryBackground,
   black: defaultColors.black,
+  white: defaultColors.white,
+  gold: defaultColors.gold,
+  border: defaultColors.border,
 };
 
 const fonts = {
