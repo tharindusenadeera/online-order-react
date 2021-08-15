@@ -1,6 +1,7 @@
 import React from "react";
 import { Footer } from "../components/common/Footer";
 import { Header } from "../components/common/Header";
+import { AddToCartModal } from "../components/items/AddToCartModal";
 
 export const MenuItemPage = (props) => {
   return (
@@ -76,18 +77,12 @@ export const MenuItemPage = (props) => {
                             Beef, cheese, potato, onion, fries
                           </span>
                         </div>
-                        <div className="col-sm-6 text-sm-right">
+                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
                           <span className="text-md mr-4">
                             <span className="text-muted">from</span> $
                             <span data-product-base-price>9.00</span>
                           </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="1"
-                          >
-                            <span>Add to cart</span>
-                          </button>
+                          <AddToCartModal />
                         </div>
                       </div>
                     </div>
@@ -100,18 +95,12 @@ export const MenuItemPage = (props) => {
                             Chicken, cheese, potato, onion, fries
                           </span>
                         </div>
-                        <div className="col-sm-6 text-sm-right">
+                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
                           <span className="text-md mr-4">
                             <span className="text-muted">from</span> $
                             <span data-product-base-price>9.00</span>
                           </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="2"
-                          >
-                            <span>Add to cart</span>
-                          </button>
+                          <AddToCartModal />
                         </div>
                       </div>
                     </div>
@@ -124,18 +113,12 @@ export const MenuItemPage = (props) => {
                             Chicken, cheese, potato, onion, fries
                           </span>
                         </div>
-                        <div className="col-sm-6 text-sm-right">
+                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
                           <span className="text-md mr-4">
                             <span className="text-muted">from</span> $
                             <span data-product-base-price>14.00</span>
                           </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="3"
-                          >
-                            <span>Add to cart</span>
-                          </button>
+                          <AddToCartModal />
                         </div>
                       </div>
                     </div>
@@ -148,18 +131,12 @@ export const MenuItemPage = (props) => {
                             Pasta, cheese, potato, onion, fries
                           </span>
                         </div>
-                        <div className="col-sm-6 text-sm-right">
+                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
                           <span className="text-md mr-4">
                             <span className="text-muted">from</span> $
                             <span data-product-base-price>13.00</span>
                           </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="4"
-                          >
-                            <span>Add to cart</span>
-                          </button>
+                          <AddToCartModal />
                         </div>
                       </div>
                     </div>

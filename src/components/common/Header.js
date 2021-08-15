@@ -1,11 +1,13 @@
 import React from "react";
+import { CartMenu } from "./CartMenu";
 
 export const Header = (props) => {
   const { onclick } = props;
 
   const handleonClick = () => {
     onclick();
-  }
+  };
+
   return (
     <header id="header" className="light">
       <div className="container">
@@ -170,20 +172,9 @@ export const Header = (props) => {
             </div>
           </div>
           <div className="col-md-2">
-            <a
-              // href="#"
-              className="module module-cart right"
-              data-toggle="panel-cart"
-              onClick={handleonClick}
-            >
-              <span className="cart-icon">
-                <i className="ti ti-shopping-cart"></i>
-                <span className="notification">0</span>
-              </span>
-              <span className="cart-value">
-                $<span className="value">0.00</span>
-              </span>
-            </a>
+            <div className="module module-cart right">
+              <CartMenu />
+            </div>
           </div>
         </div>
       </div>
