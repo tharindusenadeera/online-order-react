@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import order from "./order";
-import products from "./products";
+import orders from "./Orders";
+import products from "./Products";
+import categories from "./Categories";
 
 export default combineReducers({
-    order,
+    orders,
     products,
+    categories,
 });
