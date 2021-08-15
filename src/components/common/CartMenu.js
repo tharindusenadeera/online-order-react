@@ -1,6 +1,19 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Drawer, Button } from "antd";
 import { ShoppingCart } from "./ShoppingCart";
+import styled from "styled-components";
+import theme from "../../utils/theme";
+
+const MenuWrap = styled.div`
+  .ant-btn-ghost {
+    border: unset;
+
+    &:hover,
+    &:focus {
+      color: ${theme.colors.grey};
+    }
+  }
+`;
 
 export const CartMenu = () => {
   const [visible, setVisible] = useState(false);
@@ -12,7 +25,7 @@ export const CartMenu = () => {
   };
 
   return (
-    <Fragment>
+    <MenuWrap>
       <Button type="ghost" onClick={showDrawer}>
         <span className="cart-icon">
           <i className="ti ti-shopping-cart"></i>
@@ -32,6 +45,6 @@ export const CartMenu = () => {
       >
         <ShoppingCart />
       </Drawer>
-    </Fragment>
+    </MenuWrap>
   );
 };

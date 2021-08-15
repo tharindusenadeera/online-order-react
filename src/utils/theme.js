@@ -7,7 +7,9 @@ const defaultColors = {
   white: "#ffffff",
   black: "#3A3A3A",
   gold: "#ddae71",
+  goldShadow: "0 0 0 3px rgb(255 214 132 / 30%)",
   border: "#d9d9d9",
+  grey: "#a5a5a5",
 };
 
 const colors = {
@@ -17,7 +19,9 @@ const colors = {
   black: defaultColors.black,
   white: defaultColors.white,
   gold: defaultColors.gold,
+  goldShadow: defaultColors.goldShadow,
   border: defaultColors.border,
+  grey: defaultColors.grey,
 };
 
 const fonts = {

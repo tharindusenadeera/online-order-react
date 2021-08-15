@@ -15,7 +15,7 @@ const Wrapper = styled.div`
         top: 6px;
         .ant-radio-input {
           &:focus + .ant-radio-inner {
-            box-shadow: 0 0 0 3px rgb(255 214 132 / 30%);
+            box-shadow: ${theme.colors.goldShadow};
           }
         }
         .ant-radio-inner {
