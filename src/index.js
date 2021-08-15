@@ -11,8 +11,16 @@ import { ConfirmationPage } from "./pages/ConfirmationPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import { MenuItemPage } from "./pages/MenuItemPage";
 
+import thunk  from 'redux-thunk';
+import {createStore, applyMiddleware, compose} from 'redux';
+import reducers from './reducers';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+
+const store = createStore(reducers, composeWithDevTools(compose(applyMiddleware(thunk))));
+
 ReactDOM.render(
-  // <Provider store={store}>
+  <Provider store={store}>
     <App>
       <Router>
         <Switch>
@@ -25,7 +33,7 @@ ReactDOM.render(
         </Switch>
       </Router>
     </App>,
-  // </Provider>,
+  </Provider>,
   document.getElementById("root")
 );
 
