@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "antd";
 import styled from "styled-components";
+import { CartCollapse } from "./addToCart/CartCollapse";
 
 const ModalWrapper = styled.div``;
 
@@ -32,14 +33,6 @@ export const AddToCartModal = (props) => {
             />
           </div>
           <h4 className="modal-title">Specify your dish</h4>
-          <button
-            type="button"
-            className="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i className="ti ti-close"></i>
-          </button>
         </div>
         <div className="modal-product-details">
           <div className="row align-items-center">
@@ -54,8 +47,51 @@ export const AddToCartModal = (props) => {
             </div>
           </div>
         </div>
+
         <div className="modal-body panel-details-container">
-          {/* <!-- Panel Details / Size --> */}
+          <CartCollapse />
+        </div>
+
+        <button
+          type="button"
+          className="modal-btn btn btn-secondary btn-block btn-lg"
+          data-action="add-to-cart"
+        >
+          <span>Add to Cart</span>
+        </button>
+        <button
+          type="button"
+          className="modal-btn btn btn-secondary btn-block btn-lg"
+          data-action="update-cart"
+        >
+          <span>Update</span>
+        </button>
+      </div>
+    </ContentWrapper>
+  );
+
+  return (
+    <ModalWrapper>
+      <Button type="primary" onClick={showModal}>
+        Add to cart
+      </Button>
+      <Modal
+        //title="Basic Modal"
+        visible={isModalVisible}
+        // onOk={handleOk}
+        onCancel={handleCancel}
+        className="Ant-ustom-modal"
+        footer={null}
+      >
+        <ModalContent />
+      </Modal>
+    </ModalWrapper>
+  );
+};
+
+{
+  /* <div className="modal-body panel-details-container">
+         
           <div className="panel-details panel-details-size">
             <h5 className="panel-details-title">
               <label className="custom-control custom-radio">
@@ -117,7 +153,7 @@ export const AddToCartModal = (props) => {
               </div>
             </div>
           </div>
-          {/* <!-- Panel Details / Additions --> */}
+          
           <div className="panel-details panel-details-additions">
             <h5 className="panel-details-title">
               <label className="custom-control custom-radio">
@@ -134,7 +170,7 @@ export const AddToCartModal = (props) => {
             </h5>
             <div id="panel-details-additions-content" className="collapse">
               <div className="panel-details-content">
-                {/* <!-- Additions List --> */}
+               
                 <div className="row product-modal-additions">
                   <div className="col-sm-6">
                     <div className="form-group">
@@ -204,7 +240,7 @@ export const AddToCartModal = (props) => {
               </div>
             </div>
           </div>
-          {/* <!-- Panel Details / Other --> */}
+          
           <div className="panel-details panel-details-form">
             <h5 className="panel-details-title">
               <label className="custom-control custom-radio">
@@ -230,40 +266,5 @@ export const AddToCartModal = (props) => {
               </form>
             </div>
           </div>
-        </div>
-        <button
-          type="button"
-          className="modal-btn btn btn-secondary btn-block btn-lg"
-          data-action="add-to-cart"
-        >
-          <span>Add to Cart</span>
-        </button>
-        <button
-          type="button"
-          className="modal-btn btn btn-secondary btn-block btn-lg"
-          data-action="update-cart"
-        >
-          <span>Update</span>
-        </button>
-      </div>
-    </ContentWrapper>
-  );
-
-  return (
-    <ModalWrapper>
-      <Button type="primary" onClick={showModal}>
-        Add to cart
-      </Button>
-      <Modal
-        //title="Basic Modal"
-        visible={isModalVisible}
-        // onOk={handleOk}
-        onCancel={handleCancel}
-        className="Ant-ustom-modal"
-        footer={null}
-      >
-        <ModalContent />
-      </Modal>
-    </ModalWrapper>
-  );
-};
+        </div> */
+}
