@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import {useDispatch} from "react-redux";
 import { Modal } from "antd";
 import styled from "styled-components";
 import { CartCollapse } from "./addToCart/CartCollapse";
 import theme from "../../utils/theme";
+import {addDish} from "../../actions/Cart";
+import { InputNumber } from 'antd';
 
 const ModalWrapper = styled.div``;
 
@@ -19,7 +22,80 @@ const ContentWrapper = styled.div`
 `;
 
 export const AddToCartModal = (props) => {
+  const product = {
+    id: 1,
+    name: "Grilled Sandwich",
+    main_image: "60fa6c66eed47.png",
+    price: "360.00",
+    qty: 5,
+    status: 1,
+    created_by: 1,
+    menu_category: 1,
+    created_at: "2021-07-23T07:14:47.000000Z",
+    updated_at: "2021-08-14T08:29:11.000000Z",
+    menu_option_categories: [
+      {
+      id: 1,
+      name: "Size",
+      status: "1",
+      created_by: 1,
+      created_at: "2021-07-23T07:08:42.000000Z",
+      updated_at: "2021-07-23T07:08:42.000000Z",
+      menu_item_options: [
+          {
+          id: 2,
+          name: "medium",
+          status: "0",
+          created_by: 1,
+          created_at: "2021-07-23T07:08:19.000000Z",
+          updated_at: "2021-08-14T04:42:44.000000Z",
+          menu_option_category_menu_option_id: 5
+          },
+          {
+          id: 1,
+          name: "small",
+          status: "0",
+          created_by: 1,
+          created_at: "2021-07-23T07:07:38.000000Z",
+          updated_at: "2021-08-14T04:42:40.000000Z",
+          menu_option_category_menu_option_id: 4
+          }
+        ]
+      },
+      {
+        id: 2,
+        name: "Type",
+        status: "0",
+        created_by: 1,
+        created_at: "2021-07-23T07:12:33.000000Z",
+        updated_at: "2021-08-12T16:08:56.000000Z",
+        menu_item_options: [
+          {
+          id: 5,
+          name: "Chicken",
+          status: "1",
+          created_by: 1,
+          created_at: "2021-07-23T07:10:39.000000Z",
+          updated_at: "2021-07-27T14:34:25.000000Z",
+          menu_option_category_menu_option_id: 10
+          }
+        ]
+      }
+    ]
+  }
+
+  const initialDish = {
+    product: product,
+    addition: {},
+    other: {},
+    qunatity: 1,
+    cost: 0,
+  }
+
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dish, setDish] = useState(initialDish);
+
+  const dispatch = useDispatch();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -32,6 +108,21 @@ export const AddToCartModal = (props) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const updateDish = (updatedDish) => {
+    setDish(updatedDish);
+  }
+
+  const onChangeQunatity = (qty) => {
+    setDish({...dish, qunatity: qty, cost: dish.qunatity * parseInt(dish.product.price)});
+  }
+
+  const addToCart = () => {
+    dispatch(addDish(dish));
+
+    setIsModalVisible(false);
+    setDish(initialDish);
+  }
 
   const ModalContent = () => (
     <ContentWrapper>
@@ -48,35 +139,40 @@ export const AddToCartModal = (props) => {
         <div className="modal-product-details">
           <div className="row align-items-center">
             <div className="col-9">
-              <h6 className="mb-1 product-modal-name">Boscaiola Pasta</h6>
-              <span className="text-muted product-modal-ingredients">
+              <h6 className="mb-1 product-modal-name">{product.name}</h6>
+              {/* <span className="text-muted product-modal-ingredients">
                 Pasta, Cheese, Tomatoes, Olives
-              </span>
+              </span> */}
             </div>
-            <div className="col-3 text-lg text-right">
+            <div className="col-3 text-lg text-right">{dish.cost}
               $<span className="product-modal-price"></span>
             </div>
           </div>
         </div>
 
         <div className="modal-body panel-details-container">
-          <CartCollapse />
+          <CartCollapse updateDish={updateDish} product={product} dish={dish}/>
+        </div>
+
+        <div className="modal-btn btn btn-block btn-lg" style={{background: '#25282a'}}>
+          <InputNumber size="large" min={1} max={dish.product.qty} defaultValue={1} value={dish.qunatity} onChange={onChangeQunatity} />
         </div>
 
         <button
           type="button"
           className="modal-btn btn btn-secondary btn-block btn-lg"
           data-action="add-to-cart"
+          onClick={addToCart}
         >
           <span>Add to Cart</span>
         </button>
-        <button
+        {/* <button
           type="button"
           className="modal-btn btn btn-secondary btn-block btn-lg"
           data-action="update-cart"
         >
           <span>Update</span>
-        </button>
+        </button> */}
       </div>
     </ContentWrapper>
   );
