@@ -11,7 +11,7 @@ export const Header = (props) => {
   return (
     <Fragment>
       {/* Header */}
-      <header id="header" class="light">
+      <header id="header" class="dark">
         <div class="container">
           <div class="row">
             <div class="col-md-3">
@@ -25,7 +25,7 @@ export const Header = (props) => {
             <div class="col-md-7">
               {/* Navigation */}
               <nav class="module module-navigation left mr-4">
-                <ul id="nav-main" class="nav nav-main">
+                {/* <ul id="nav-main" class="nav nav-main">
                   <li class="has-dropdown">
                     <a href="#">Home</a>
                     <div class="dropdown-container">
@@ -162,16 +162,16 @@ export const Header = (props) => {
                       </div>
                     </div>
                   </li>
-                </ul>
+                </ul> */}
               </nav>
-              <div class="module left">
+              {/* <div class="module left">
                 <a
                   href="menu-list-navigation.html"
                   class="btn btn-outline-secondary"
                 >
                   <span>Order</span>
                 </a>
-              </div>
+              </div> */}
             </div>
             <div class="col-md-2">
               <a

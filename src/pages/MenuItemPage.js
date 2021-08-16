@@ -4,6 +4,7 @@ import { Footer } from "../components/common/Footer";
 import { Header } from "../components/common/Header";
 import { MenuItemNavigation } from "../components/common/MenuItemNavigation";
 import { AddToCartModal } from "../components/items/AddToCartModal";
+import * as Constants from "../constants/Constants";
 
 export const MenuItemPage = (props) => {
   const [categories, setCategories] = useState([]);
@@ -14,6 +15,8 @@ export const MenuItemPage = (props) => {
         setCategories(res.data.data);
       }
     }, [])
+    // setCategories(Constants.categories.data);
+    // console.log("Constants.categories.data", Constants.categories.data);
   }, []);
 
   return (
@@ -40,7 +43,7 @@ export const MenuItemPage = (props) => {
             <div className="row no-gutters">
               <div className="col-md-3">
                 {/* <!-- Menu Navigation --> */}
-                <MenuItemNavigation categories={categories}/>
+                <MenuItemNavigation categories={categories} />
               </div>
               <div className="col-md-9">
                 {/* <!-- Menu Category / Burgers --> */}

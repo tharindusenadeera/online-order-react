@@ -11,7 +11,7 @@ export const MenuItemNavigation = (props) => {
           categories.map((index, key) => {
             return (
               <li>
-                <a href={key}>{index}</a>
+                <a href={key}>{index.name}</a>
               </li>
             );
           })}
