@@ -12,6 +12,10 @@ const GlobalStyle = createGlobalStyle`
     color: ${theme.colors.black};
   }
 
+  h1,h2,h4{
+    font-weight: 200;
+  }
+
   //Menu
   .nav-menu{
     li{
@@ -69,6 +73,11 @@ const GlobalStyle = createGlobalStyle`
       }
     }
     
+  }
+
+  //Menu
+  .menu-category .menu-category-title .title{
+    color: ${theme.colors.white};
   }
   
 
