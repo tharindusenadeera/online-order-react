@@ -1,4 +1,14 @@
 import React from "react";
+import styled from "styled-components";
+
+const Button = styled.button`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  white-space: nowrap;
+  z-index: 3;
+`;
 
 export const ShoppingCart = (props) => {
   return (
@@ -94,12 +104,9 @@ export const ShoppingCart = (props) => {
           </div>
         </div>
       </div>
-      <a
-        href="checkout.html"
-        className="panel-cart-action btn btn-secondary btn-block btn-lg"
-      >
+      <Button className="panel-cart-action btn btn-secondary btn-block btn-lg">
         <span>Go to checkout</span>
-      </a>
+      </Button>
     </div>
   );
 };

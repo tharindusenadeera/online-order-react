@@ -4,6 +4,7 @@ import { SizeContent } from "./SizeContent";
 import { AdditionsContent } from "./AdditionsContent";
 import styled from "styled-components";
 import CorrectIcon from "../../../assests/svg/correct.svg";
+import theme from "../../../utils/theme";
 
 const CollapseAnt = styled(Collapse)`
   .ant-collapse-item {
@@ -17,6 +18,18 @@ const CollapseAnt = styled(Collapse)`
           margin-right: 10px;
         }
       }
+    }
+  }
+`;
+
+const InputWrap = styled.div`
+  .ant-input {
+    &:hover {
+      border-color: ${theme.colors.gold};
+    }
+    &:focus,
+    .ant-input-focused {
+      box-shadow: ${theme.colors.goldShadow};
     }
   }
 `;
@@ -43,7 +56,9 @@ export const CartCollapse = () => {
         <AdditionsContent />
       </Panel>
       <Panel header="Other" key="3" showArrow={false} className="checked">
-        <TextArea rows={4} placeholder="Put this any other informations..." />
+        <InputWrap>
+          <TextArea rows={4} placeholder="Put this any other informations..." />
+        </InputWrap>
       </Panel>
     </CollapseAnt>
   );
