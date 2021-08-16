@@ -10,6 +10,7 @@ const defaultColors = {
   goldShadow: "0 0 0 3px rgb(255 214 132 / 30%)",
   border: "#d9d9d9",
   grey: "#a5a5a5",
+  greyf3f4f4: "#f3f4f4",
 };
 
 const colors = {
@@ -22,6 +23,7 @@ const colors = {
   goldShadow: defaultColors.goldShadow,
   border: defaultColors.border,
   grey: defaultColors.grey,
+  greyf3f4f4: defaultColors.greyf3f4f4,
 };
 
 const fonts = {

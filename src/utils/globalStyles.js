@@ -12,6 +12,19 @@ const GlobalStyle = createGlobalStyle`
     color: ${theme.colors.black};
   }
 
+  //Menu
+  .nav-menu{
+    li{
+      a{
+        color: ${theme.colors.white};
+
+        &:hover{
+          color: ${theme.colors.gold};
+        }
+      }
+    } 
+  }
+
   //Ant Modal
   .ant-custom-modal{
     top: 25px;
@@ -29,6 +42,35 @@ const GlobalStyle = createGlobalStyle`
       padding: unset;
     }
   }
+
+  //Ant Drawer{
+  .drawer-custom{
+    .ant-drawer-content-wrapper{
+      @media ${theme.device.xs}{
+        width: 100% !important; //Drawer size in Mobile
+      }
+      @media ${theme.device.sm}{
+        width: 500px !important; //Drawer size in Tab & Dekstop
+      }
+      .ant-drawer-header{
+        background-color: ${theme.colors.greyf3f4f4};
+        .ant-drawer-title{
+          font-size: 1.375rem ;
+          font-weight: 400;
+        }
+        .ant-drawer-close{
+          &:focus{
+            outline: unset;
+          }
+        }
+      }
+      .ant-drawer-body{
+        padding: unset;
+      }
+    }
+    
+  }
+  
 
 `;
 

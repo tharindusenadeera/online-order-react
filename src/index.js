@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import App from "./App";
 import "antd/dist/antd.css";
 import "./index.css";
+import App from "./App";
 import { ItemDetail } from "./pages/ItemDetail";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
@@ -13,18 +13,18 @@ import { MenuItemPage } from "./pages/MenuItemPage";
 
 ReactDOM.render(
   // <Provider store={store}>
-    <App>
-      <Router>
-        <Switch>
-          <React.Fragment>
-            <Route exact path="/" component={MenuItemPage} />
-            <Route path="/confirmed" component={ConfirmationPage} />
-            <Route path="/checkout" component={CheckoutPage} />
-            <Route path="/item" component={ItemDetail} />
-          </React.Fragment>
-        </Switch>
-      </Router>
-    </App>,
+  <App>
+    <Router>
+      <Switch>
+        <React.Fragment>
+          <Route exact path="/" component={MenuItemPage} />
+          <Route path="/confirmed" component={ConfirmationPage} />
+          <Route path="/checkout" component={CheckoutPage} />
+          <Route path="/item" component={ItemDetail} />
+        </React.Fragment>
+      </Switch>
+    </Router>
+  </App>,
   // </Provider>,
   document.getElementById("root")
 );

@@ -36,12 +36,11 @@ export const CartMenu = () => {
         </span>
       </Button>
       <Drawer
-        title="Basic Drawer"
+        title="Your Cart"
         placement="right"
-        closable={false}
         onClose={onClose}
         visible={visible}
-        width={500}
+        className="drawer-custom"
       >
         <ShoppingCart />
       </Drawer>
