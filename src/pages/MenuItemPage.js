@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getCategories } from "../api/Categories";
 import { Footer } from "../components/common/Footer";
 import { Header } from "../components/common/Header";
+import { MenuItemNavigation } from "../components/common/MenuItemNavigation";
 import { AddToCartModal } from "../components/items/AddToCartModal";
 
 export const MenuItemPage = (props) => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getCategories().then(res => {
+      if (res.data.status) {
+        setCategories(res.data.data);
+      }
+    }, [])
+  }, []);
+
   return (
     <div id="body-wrapper" className="">
       <Header />
@@ -28,32 +40,7 @@ export const MenuItemPage = (props) => {
             <div className="row no-gutters">
               <div className="col-md-3">
                 {/* <!-- Menu Navigation --> */}
-                <nav
-                  id="menu-navigation"
-                  className="stick-to-content"
-                  data-local-scroll
-                >
-                  <ul className="nav nav-menu bg-dark dark">
-                    <li>
-                      <a href="#Burgers">Burgers</a>
-                    </li>
-                    <li>
-                      <a href="#Pasta">Pasta</a>
-                    </li>
-                    <li>
-                      <a href="#Pizza">Pizza</a>
-                    </li>
-                    <li>
-                      <a href="#Sushi">Sushi</a>
-                    </li>
-                    <li>
-                      <a href="#Desserts">Desserts</a>
-                    </li>
-                    <li>
-                      <a href="#Drinks">Drinks</a>
-                    </li>
-                  </ul>
-                </nav>
+                <MenuItemNavigation categories={categories}/>
               </div>
               <div className="col-md-9">
                 {/* <!-- Menu Category / Burgers --> */}
