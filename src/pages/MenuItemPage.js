@@ -15,6 +15,13 @@ export const MenuItemPage = (props) => {
         setCategories(res.data.data);
       }
     }, []);
+    // getCategories().then(res => {
+    //   if (res.data.status) {
+    //     setCategories(res.data.data);
+    //   }
+    // }, [])
+    // setCategories(Constants.categories.data);
+    // console.log("Constants.categories.data", Constants.categories.data);
   }, []);
 
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Collapse, Input } from "antd";
-import { SizeContent } from "./SizeContent";
+import { CategoryContent } from "./CategoryContent";
 import { AdditionsContent } from "./AdditionsContent";
 import styled from "styled-components";
 import CorrectIcon from "../../../assests/svg/correct.svg";
@@ -37,7 +37,9 @@ const InputWrap = styled.div`
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
-export const CartCollapse = () => {
+export const CartCollapse = (props) => {
+  const { updateDish, product, dish} = props;
+  
   function callback(key) {
     console.log(key);
   }
@@ -49,13 +51,19 @@ export const CartCollapse = () => {
       onChange={callback}
       expandIconPosition="right"
     >
-      <Panel header="Size" key="1" showArrow={false} className="checked">
-        <SizeContent />
-      </Panel>
-      <Panel header="Additions" key="2" showArrow={false}>
+      { product?.menu_option_categories?.map((category) => {
+          return (
+            <Panel header={category.name} key={category.id} showArrow={false} className="checked">
+              <CategoryContent updateDish={updateDish} category={category} dish={dish}/>
+            </Panel>
+          )
+        })
+      }
+      
+      <Panel header="Additions" key="112" showArrow={false}>
         <AdditionsContent />
       </Panel>
-      <Panel header="Other" key="3" showArrow={false} className="checked">
+      <Panel header="Other" key="3111" showArrow={false} className="checked">
         <InputWrap>
           <TextArea rows={4} placeholder="Put this any other informations..." />
         </InputWrap>
