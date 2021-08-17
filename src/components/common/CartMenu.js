@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useSelector} from "react-redux";
 import { Drawer, Button } from "antd";
 import { ShoppingCart } from "./ShoppingCart";
 import styled from "styled-components";
@@ -17,6 +18,17 @@ const MenuWrap = styled.div`
 
 export const CartMenu = () => {
   const [visible, setVisible] = useState(false);
+  const cartItems = useSelector(state => state.cart);
+
+  let deliveryCost = 0;
+  let totalCost = 0;
+
+  cartItems.forEach((cartItem) => {
+    totalCost += cartItem.cost;
+  })
+
+  let finalCost = totalCost - deliveryCost;
+
   const showDrawer = () => {
     setVisible(true);
   };
@@ -29,10 +41,10 @@ export const CartMenu = () => {
       <Button type="ghost" onClick={showDrawer}>
         <span className="cart-icon">
           <i className="ti ti-shopping-cart"></i>
-          <span className="notification">0</span>
+          <span className="notification">{cartItems.length}</span>
         </span>
-        <span className="cart-value">
-          $<span className="value">1.00</span>
+        <span className="cart-value" style={{color: "#bbc4c6"}}>
+          $&nbsp;<span className="value">{finalCost}</span>
         </span>
       </Button>
       <Drawer
