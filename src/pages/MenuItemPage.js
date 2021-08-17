@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCategories } from "../api/Categories";
+import { productsList } from "../api/products";
 import { Footer } from "../components/common/Footer";
 import { Header } from "../components/common/Header";
 import { MenuItemNavigation } from "../components/common/MenuItemNavigation";
@@ -8,22 +9,33 @@ import * as Constants from "../constants/Constants";
 
 export const MenuItemPage = (props) => {
   const [categories, setCategories] = useState([]);
+  const [allItems, setAllItems] = useState([]);
 
   useEffect(() => {
     getCategories().then((res) => {
-      if (res.data.status) {
+      if (res.data.status == "success") {
         setCategories(res.data.data);
       }
     }, []);
-    // getCategories().then(res => {
-    //   if (res.data.status) {
-    //     setCategories(res.data.data);
-    //   }
-    // }, [])
-    // setCategories(Constants.categories.data);
-    // console.log("Constants.categories.data", Constants.categories.data);
+
+    productsList().then((res) => {
+      if (res.data.status == "success") {
+        setAllItems(res.data.data);
+        handleList(res.data.data);
+      }
+    });
   }, []);
 
+  const handleList = (data) => {
+    let newArr = [];
+    categories?.forEach((element) => {
+      let item = data?.filter((item) => item.menu_category == element.id);
+      newArr.push(item);
+    });
+    setAllItems(newArr);
+    console.log("newArr", newArr);
+  };
+console.log("allItems", allItems?.length && allItems[0]);
   return (
     <div id="body-wrapper" className="">
       <Header />
@@ -82,23 +94,27 @@ export const MenuItemPage = (props) => {
                       </div>
                     </div>
                     {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Broccoli</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
+                    {/* {allItems[0]?.map((item, key) => {
+                      return (
+                        <div className="menu-item menu-list-item">
+                          <div className="row align-items-center">
+                            <div className="col-sm-6 mb-2 mb-sm-0">
+                              <h6 className="mb-0">Broccoli</h6>
+                              <span className="text-muted text-sm">
+                                {item.name}
+                              </span>
+                            </div>
+                            <div className="col-sm-6 d-flex align-items-center justify-content-end">
+                              <span className="text-md mr-4">
+                                <span className="text-muted">from</span> $
+                                <span data-product-base-price>{item.price}</span>
+                              </span>
+                              <AddToCartModal />
+                            </div>
+                          </div>
                         </div>
-                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <AddToCartModal />
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    })} */}
                     {/* <!-- Menu Item --> */}
                     <div className="menu-item menu-list-item">
                       <div className="row align-items-center">
@@ -137,6 +153,7 @@ export const MenuItemPage = (props) => {
                     </div>
                   </div>
                 </div>
+
                 {/* <!-- Menu Category / Pasta --> */}
                 <div id="Pasta" className="menu-category">
                   <div className="menu-category-title">
@@ -247,6 +264,7 @@ export const MenuItemPage = (props) => {
                     </div>
                   </div>
                 </div>
+
                 {/* <!-- Menu Category / Pizza --> */}
                 <div id="Pizza" className="menu-category">
                   <div className="menu-category-title">
@@ -357,6 +375,7 @@ export const MenuItemPage = (props) => {
                     </div>
                   </div>
                 </div>
+
                 {/* <!-- Menu Category / Sushi --> */}
                 <div id="Sushi" className="menu-category">
                   <div className="menu-category-title">
@@ -467,6 +486,7 @@ export const MenuItemPage = (props) => {
                     </div>
                   </div>
                 </div>
+
                 {/* <!-- Menu Category / Desserts --> */}
                 <div id="Desserts" className="menu-category">
                   <div className="menu-category-title">
@@ -577,6 +597,7 @@ export const MenuItemPage = (props) => {
                     </div>
                   </div>
                 </div>
+
                 {/* <!-- Menu Category / Drinks --> */}
                 <div id="Drinks" className="menu-category">
                   <div className="menu-category-title">
