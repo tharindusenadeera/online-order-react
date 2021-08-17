@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router";
 import {useSelector, useDispatch} from "react-redux";
 import styled from "styled-components";
 import {deleteDish} from "../../actions/Cart";
@@ -13,6 +14,13 @@ const Button = styled.button`
 `;
 
 export const ShoppingCart = (props) => {
+  const history = useHistory();
+
+  const handleCheckout = () => {
+    history.push({
+      pathname: "/checkout",
+    });
+  };
   const dispatch = useDispatch();
   const cartItems = useSelector(state => state.cart);
 
@@ -119,7 +127,10 @@ export const ShoppingCart = (props) => {
         </div>
 
       </div>
-      <Button className="panel-cart-action btn btn-secondary btn-block btn-lg">
+      <Button
+        className="panel-cart-action btn btn-secondary btn-block btn-lg"
+        onClick={handleCheckout}
+      >
         <span>Go to checkout</span>
       </Button>
     </div>
