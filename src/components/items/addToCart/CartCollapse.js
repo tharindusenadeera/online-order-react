@@ -41,7 +41,7 @@ export const CartCollapse = (props) => {
   const { updateDish, product, dish} = props;
   
   function callback(key) {
-    console.log(key);
+    // console.log(key);
   }
 
   return (

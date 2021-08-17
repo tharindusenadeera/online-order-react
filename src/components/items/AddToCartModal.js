@@ -23,67 +23,7 @@ const ContentWrapper = styled.div`
 `;
 
 export const AddToCartModal = (props) => {
-  const product = {
-    id: 1,
-    name: "Grilled Sandwich",
-    main_image: "60fa6c66eed47.png",
-    price: "360.00",
-    qty: 5,
-    status: 1,
-    created_by: 1,
-    menu_category: 1,
-    created_at: "2021-07-23T07:14:47.000000Z",
-    updated_at: "2021-08-14T08:29:11.000000Z",
-    menu_option_categories: [
-      {
-      id: 1,
-      name: "Size",
-      status: "1",
-      created_by: 1,
-      created_at: "2021-07-23T07:08:42.000000Z",
-      updated_at: "2021-07-23T07:08:42.000000Z",
-      menu_item_options: [
-          {
-          id: 2,
-          name: "medium",
-          status: "0",
-          created_by: 1,
-          created_at: "2021-07-23T07:08:19.000000Z",
-          updated_at: "2021-08-14T04:42:44.000000Z",
-          menu_option_category_menu_option_id: 5
-          },
-          {
-          id: 1,
-          name: "small",
-          status: "0",
-          created_by: 1,
-          created_at: "2021-07-23T07:07:38.000000Z",
-          updated_at: "2021-08-14T04:42:40.000000Z",
-          menu_option_category_menu_option_id: 4
-          }
-        ]
-      },
-      {
-        id: 2,
-        name: "Type",
-        status: "0",
-        created_by: 1,
-        created_at: "2021-07-23T07:12:33.000000Z",
-        updated_at: "2021-08-12T16:08:56.000000Z",
-        menu_item_options: [
-          {
-          id: 5,
-          name: "Chicken",
-          status: "1",
-          created_by: 1,
-          created_at: "2021-07-23T07:10:39.000000Z",
-          updated_at: "2021-07-27T14:34:25.000000Z",
-          menu_option_category_menu_option_id: 10
-          }
-        ]
-      }
-    ]
-  }
+  const {product} = props;
 
   const initialDish = {
     product: product,
@@ -145,7 +85,8 @@ export const AddToCartModal = (props) => {
         <div className="modal-header modal-header-lg dark bg-dark">
           <div className="bg-image">
             <img
-              src="http://assets.suelo.pl/soup/img/photos/modal-add.jpg"
+              // src="http://assets.suelo.pl/soup/img/photos/modal-add.jpg"
+              src={process.env.REACT_APP_IMAGE_URL + product.main_image}
               alt=""
             />
           </div>

@@ -8,13 +8,14 @@ export const MenuItemNavigation = (props) => {
     <nav id="menu-navigation" className="stick-to-content" data-local-scroll>
       <ul className="nav nav-menu bg-dark dark">
         {categories &&
-          categories.map((index, key) => {
+          categories.map((category, index) => {
             return (
-              <li>
-                <a href={key}>{index.name}</a>
+              <li key={category.id}>
+                <a href={index}>{category.name}</a>
               </li>
             );
           })}
+
         {/* <li>
           <a href="#Burgers">Burgers</a>
         </li>
@@ -33,6 +34,7 @@ export const MenuItemNavigation = (props) => {
         <li>
           <a href="#Drinks">Drinks</a>
         </li> */}
+
       </ul>
     </nav>
   );

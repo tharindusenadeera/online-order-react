@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCategories } from "../api/Categories";
+import { productsList } from "../api/products";
 import { Footer } from "../components/common/Footer";
 import { Header } from "../components/common/Header";
 import { MenuItemNavigation } from "../components/common/MenuItemNavigation";
@@ -8,14 +9,27 @@ import * as Constants from "../constants/Constants";
 
 export const MenuItemPage = (props) => {
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  const CategoryHeading = {
+    fontWeight: "100",
+    color: "white"
+  }
 
   useEffect(() => {
-    // getCategories().then(res => {
-    //   if (res.data.status) {
-    //     setCategories(res.data.data);
-    //   }
-    // }, [])
-    setCategories(Constants.categories.data);
+
+    getCategories().then(res => {
+      if (res.data.status) {
+        setCategories(res.data.data);
+      }
+    });
+
+    productsList().then(res => {
+      if (res.data.status) {
+        setProducts(res.data.data);
+      }
+    })
+    // setCategories(Constants.categories.data);
     // console.log("Constants.categories.data", Constants.categories.data);
   }, []);
 
@@ -41,651 +55,67 @@ export const MenuItemPage = (props) => {
         <div className="page-content">
           <div className="container">
             <div className="row no-gutters">
+
               <div className="col-md-3">
                 {/* <!-- Menu Navigation --> */}
                 <MenuItemNavigation categories={categories} />
               </div>
+
               <div className="col-md-9">
-                {/* <!-- Menu Category / Burgers --> */}
-                <div id="Burgers" className="menu-category">
-                  <div className="menu-category-title">
-                    <div className="bg-image">
-                      <img
-                        src="http://assets.suelo.pl/soup/img/photos/menu-title-burgers.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <h2 className="title">Burgers</h2>
-                  </div>
-                  <div className="menu-category-content">
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Beef Burger</h6>
-                          <span className="text-muted text-sm">
-                            Beef, cheese, potato, onion, fries
-                          </span>
+
+                { categories.map((category) => {
+                    return (
+
+                    <div className="menu-category" key={category.id}>
+                      <div className="menu-category-title">
+                        <div className="bg-image">
+                          <img
+                            src="http://assets.suelo.pl/soup/img/photos/menu-title-burgers.jpg"
+                            alt=""
+                          />
                         </div>
-                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <AddToCartModal />
-                        </div>
+                        <h2 className="title" style={{...CategoryHeading}}>{category.name}</h2>
                       </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Broccoli</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <AddToCartModal />
-                        </div>
+
+                      <div className="menu-category-content">
+
+                        { products.map((product) => {
+
+                          return product.menu_category === category.id ?  (
+                            <div className="menu-item menu-list-item" key= {product.id}>
+                              <div className="row align-items-center">
+                                <div className="col-sm-6 mb-2 mb-sm-0">
+                                  <h6 className="mb-0">{product.name}</h6>
+                                  <span className="text-muted text-sm">
+                                    {/* Beef, cheese, potato, onion, fries */}
+                                  </span>
+                                </div>
+                                <div className="col-sm-6 d-flex align-items-center justify-content-end">
+                                  <span className="text-md mr-4">
+                                    <span className="text-muted">from&nbsp;</span> $
+                                    <span data-product-base-price>&nbsp;{product.price}</span>
+                                  </span>
+                                  <AddToCartModal product={product}/>
+                                </div>
+                              </div>
+                            </div>
+                          ) : null
+                          })
+                        }
                       </div>
+
                     </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Chicken Burger</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>14.00</span>
-                          </span>
-                          <AddToCartModal />
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Creste di Galli</h6>
-                          <span className="text-muted text-sm">
-                            Pasta, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 d-flex align-items-center justify-content-end">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>13.00</span>
-                          </span>
-                          <AddToCartModal />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- Menu Category / Pasta --> */}
-                <div id="Pasta" className="menu-category">
-                  <div className="menu-category-title">
-                    <div className="bg-image">
-                      <img
-                        src="http://assets.suelo.pl/soup/img/photos/menu-title-pasta.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <h2 className="title">Pasta</h2>
-                  </div>
-                  <div className="menu-category-content">
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Beef Burger</h6>
-                          <span className="text-muted text-sm">
-                            Beef, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="1"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Broccoli</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="2"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Chicken Burger</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>14.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="3"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Creste di Galli</h6>
-                          <span className="text-muted text-sm">
-                            Pasta, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>13.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="4"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- Menu Category / Pizza --> */}
-                <div id="Pizza" className="menu-category">
-                  <div className="menu-category-title">
-                    <div className="bg-image">
-                      <img
-                        src="http://assets.suelo.pl/soup/img/photos/menu-title-pizza.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <h2 className="title">Pizza</h2>
-                  </div>
-                  <div className="menu-category-content">
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Beef Burger</h6>
-                          <span className="text-muted text-sm">
-                            Beef, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="1"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Broccoli</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="2"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Chicken Burger</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>14.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="3"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Creste di Galli</h6>
-                          <span className="text-muted text-sm">
-                            Pasta, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>13.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="4"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- Menu Category / Sushi --> */}
-                <div id="Sushi" className="menu-category">
-                  <div className="menu-category-title">
-                    <div className="bg-image">
-                      <img
-                        src="http://assets.suelo.pl/soup/img/photos/menu-title-sushi.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <h2 className="title">Sushi</h2>
-                  </div>
-                  <div className="menu-category-content">
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Beef Burger</h6>
-                          <span className="text-muted text-sm">
-                            Beef, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="1"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Broccoli</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="2"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Chicken Burger</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>14.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="3"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Creste di Galli</h6>
-                          <span className="text-muted text-sm">
-                            Pasta, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>13.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="4"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- Menu Category / Desserts --> */}
-                <div id="Desserts" className="menu-category">
-                  <div className="menu-category-title">
-                    <div className="bg-image">
-                      <img
-                        src="http://assets.suelo.pl/soup/img/photos/menu-title-desserts.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <h2 className="title">Desserts</h2>
-                  </div>
-                  <div className="menu-category-content">
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Beef Burger</h6>
-                          <span className="text-muted text-sm">
-                            Beef, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="1"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Broccoli</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="2"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Chicken Burger</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>14.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="3"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Creste di Galli</h6>
-                          <span className="text-muted text-sm">
-                            Pasta, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>13.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="4"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- Menu Category / Drinks --> */}
-                <div id="Drinks" className="menu-category">
-                  <div className="menu-category-title">
-                    <div className="bg-image">
-                      <img
-                        src="http://assets.suelo.pl/soup/img/photos/menu-title-drinks.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <h2 className="title">Drinks</h2>
-                  </div>
-                  <div className="menu-category-content">
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Beef Burger</h6>
-                          <span className="text-muted text-sm">
-                            Beef, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="1"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Broccoli</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>9.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="2"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Chicken Burger</h6>
-                          <span className="text-muted text-sm">
-                            Chicken, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>14.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="3"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* <!-- Menu Item --> */}
-                    <div className="menu-item menu-list-item">
-                      <div className="row align-items-center">
-                        <div className="col-sm-6 mb-2 mb-sm-0">
-                          <h6 className="mb-0">Creste di Galli</h6>
-                          <span className="text-muted text-sm">
-                            Pasta, cheese, potato, onion, fries
-                          </span>
-                        </div>
-                        <div className="col-sm-6 text-sm-right">
-                          <span className="text-md mr-4">
-                            <span className="text-muted">from</span> $
-                            <span data-product-base-price>13.00</span>
-                          </span>
-                          <button
-                            className="btn btn-outline-secondary btn-sm"
-                            data-action="open-cart-modal"
-                            data-id="4"
-                          >
-                            <span>Add to cart</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                      
+                    )
+                  })
+                }
+            
               </div>
+
             </div>
           </div>
         </div>
+
         <Footer />
       </div>
     </div>

@@ -32,6 +32,7 @@ export const CartMenu = () => {
   const showDrawer = () => {
     setVisible(true);
   };
+  
   const onClose = () => {
     setVisible(false);
   };
