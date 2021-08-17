@@ -10,3 +10,5 @@ export const ADD_CATEGORIES= 'ADD_CATEGORIES';
 
 //---------- Cart -----------------------//
 export const ADD_DISH ='ADD_DISH';
+export const UPDATE_DISH = 'UPDATE_DISH';
+export const DELETE_DISH = 'DELETE_DISH';

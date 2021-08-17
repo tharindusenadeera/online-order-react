@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Modal } from "antd";
 import styled from "styled-components";
 import { CartCollapse } from "./addToCart/CartCollapse";
 import theme from "../../utils/theme";
-import {addDish} from "../../actions/Cart";
+import {addDish, updateDish }  from "../../actions/Cart";
 import { InputNumber } from 'antd';
+import { GenerateUniqueId, CheckforMatch, GetItemFromId} from '../common/generateUniqueId';
 
 const ModalWrapper = styled.div``;
 
@@ -88,12 +89,14 @@ export const AddToCartModal = (props) => {
     product: product,
     addition: {},
     other: {},
-    qunatity: 1,
+    quantity: 1,
     cost: 0,
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dish, setDish] = useState(initialDish);
+  const cartItems = useSelector(state => state.cart);
+ 
 
   const dispatch = useDispatch();
 
@@ -109,16 +112,28 @@ export const AddToCartModal = (props) => {
     setIsModalVisible(false);
   };
 
-  const updateDish = (updatedDish) => {
+  const updateDishFunc = (updatedDish) => {
     setDish(updatedDish);
   }
 
-  const onChangeQunatity = (qty) => {
-    setDish({...dish, qunatity: qty, cost: dish.qunatity * parseInt(dish.product.price)});
+  const onChangeQuantity = (qty) => {
+    setDish({...dish, quantity: qty, cost: dish.quantity * parseInt(dish.product.price)});
   }
 
   const addToCart = () => {
-    dispatch(addDish(dish));
+
+    const id = GenerateUniqueId(dish.product);
+    const isExistingItem = CheckforMatch(id, cartItems);
+
+    if (isExistingItem) {
+      const existingItem = GetItemFromId(id, cartItems);
+      const newQuantity = existingItem.quantity + dish.quantity;
+      const updatedItem = {...existingItem, cost : newQuantity * parseInt(dish.product.price), quantity: newQuantity};
+
+      dispatch(updateDish(updatedItem));
+    } else {
+      dispatch(addDish({...dish, id: id}));
+    }
 
     setIsModalVisible(false);
     setDish(initialDish);
@@ -151,11 +166,11 @@ export const AddToCartModal = (props) => {
         </div>
 
         <div className="modal-body panel-details-container">
-          <CartCollapse updateDish={updateDish} product={product} dish={dish}/>
+          <CartCollapse updateDish={updateDishFunc} product={product} dish={dish}/>
         </div>
 
         <div className="modal-btn btn btn-block btn-lg" style={{background: '#25282a'}}>
-          <InputNumber size="large" min={1} max={dish.product.qty} defaultValue={1} value={dish.qunatity} onChange={onChangeQunatity} />
+          <InputNumber size="large" min={1} max={dish.product.qty} defaultValue={1} value={dish.quantity} onChange={onChangeQuantity} />
         </div>
 
         <button
