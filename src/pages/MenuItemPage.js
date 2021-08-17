@@ -19,13 +19,13 @@ export const MenuItemPage = (props) => {
   useEffect(() => {
 
     getCategories().then(res => {
-      if (res.data.status) {
+      if (res.data.status === "success") {
         setCategories(res.data.data);
       }
     });
 
     productsList().then(res => {
-      if (res.data.status) {
+      if (res.data.status === "success") {
         setProducts(res.data.data);
       }
     })
