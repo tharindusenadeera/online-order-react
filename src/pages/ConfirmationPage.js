@@ -30,7 +30,7 @@ export const ConfirmationPage = (props) => {
                   You will recieve it in 30 minutes.
                 </h4>
                 <a
-                  href="menu-list-navigation.html"
+                  href="/"
                   className="btn btn-outline-secondary"
                 >
                   <span>Go back to menu</span>

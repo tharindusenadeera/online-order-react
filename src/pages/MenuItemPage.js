@@ -10,13 +10,11 @@ export const MenuItemPage = (props) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    getCategories().then(res => {
+    getCategories().then((res) => {
       if (res.data.status) {
         setCategories(res.data.data);
       }
-    }, [])
-    // setCategories(Constants.categories.data);
-    // console.log("Constants.categories.data", Constants.categories.data);
+    }, []);
   }, []);
 
   return (

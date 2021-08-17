@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -11,6 +12,14 @@ const Button = styled.button`
 `;
 
 export const ShoppingCart = (props) => {
+  const history = useHistory();
+
+  const handleCheckout = () => {
+    history.push({
+      pathname: "/checkout",
+    });
+  };
+
   return (
     <div id="">
       <div className="panel-cart-container">
@@ -104,7 +113,10 @@ export const ShoppingCart = (props) => {
           </div>
         </div>
       </div>
-      <Button className="panel-cart-action btn btn-secondary btn-block btn-lg">
+      <Button
+        className="panel-cart-action btn btn-secondary btn-block btn-lg"
+        onClick={handleCheckout}
+      >
         <span>Go to checkout</span>
       </Button>
     </div>

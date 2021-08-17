@@ -72,3 +72,51 @@ export const categories = {
   status_code: "200",
   message: "Categories",
 };
+
+export const cities = {
+  data: [
+    {
+      id: 1,
+      name: "Sydney",
+      delivery_charge: "150.00",
+      status: 1,
+      created_at: "2021-08-07T15:37:53.000000Z",
+      updated_at: "2021-08-07T15:37:53.000000Z",
+    },
+    {
+      id: 2,
+      name: "Dubbo",
+      delivery_charge: "250.00",
+      status: 1,
+      created_at: "2021-08-07T15:38:02.000000Z",
+      updated_at: "2021-08-07T15:38:02.000000Z",
+    },
+    {
+      id: 3,
+      name: "Penrith",
+      delivery_charge: "150.00",
+      status: 1,
+      created_at: "2021-08-07T15:38:18.000000Z",
+      updated_at: "2021-08-07T15:38:18.000000Z",
+    },
+    {
+      id: 4,
+      name: "Albury",
+      delivery_charge: "170.00",
+      status: 1,
+      created_at: "2021-08-07T15:38:30.000000Z",
+      updated_at: "2021-08-07T15:38:30.000000Z",
+    },
+    {
+      id: 5,
+      name: "Goulburn",
+      delivery_charge: "168.00",
+      status: 1,
+      created_at: "2021-08-07T15:38:40.000000Z",
+      updated_at: "2021-08-07T15:38:40.000000Z",
+    },
+  ],
+  status: "success",
+  status_code: "200",
+  message: "Cities",
+};
