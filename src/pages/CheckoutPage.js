@@ -3,8 +3,10 @@ import { Header } from "../components/common/Header";
 import { Footer } from "../components/common/Footer";
 import { CheckoutForm } from "../components/checkout/CheckoutForm";
 import { OrderDetails } from "../components/checkout/OrderDetails";
+import { useSelector } from "react-redux";
 
 export const CheckoutPage = (props) => {
+  const cartDetails = useSelector((state) => state.cart)
   return (
     <div id="body-wrapper" className="">
       <Header />
@@ -35,9 +37,9 @@ export const CheckoutPage = (props) => {
           <div className="container">
             <div className="row">
               <div className="col-xl-4 col-lg-5">
-                <OrderDetails />
+                <OrderDetails cartDetails={cartDetails}/>
               </div>
-              <CheckoutForm />
+              <CheckoutForm cartDetails={cartDetails}/>
             </div>
           </div>
         </section>

@@ -6,8 +6,9 @@ import { cities } from "../../constants/Constants";
 import { ModalPopup } from "../common/ModalPopup";
 import "react-phone-input-2/lib/style.css";
 import { Checkbox } from "antd";
+import { useSelector } from "react-redux";
 
-export const CheckoutForm = (props) => {
+export const CheckoutForm = ({ cartDetails}) => {
   const history = useHistory();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -155,7 +156,7 @@ export const CheckoutForm = (props) => {
               >
                 <option value=""></option>
                 {cities?.data.map((item, key) => {
-                  return <option value={item.id}>{item.name}</option>;
+                  return <option key={key} value={item.id}>{item.name}</option>;
                 })}
               </select>
             </div>
