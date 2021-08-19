@@ -14,28 +14,34 @@ const Button = styled.button`
 `;
 
 export const ShoppingCart = (props) => {
+  const { handleEditCart} = props;
   const history = useHistory();
+  const dispatch = useDispatch();
 
+
+  const cartItems = useSelector(state => state.cart);
+  
+  let deliveryCost = 0;
+  let totalCost = 0;
+  
+  cartItems.forEach((cartItem) => {
+    totalCost += cartItem.cost;
+  })
+  
+  let finalCost = totalCost - deliveryCost;
+  
   const handleCheckout = () => {
     history.push({
       pathname: "/checkout",
     });
   };
-  const dispatch = useDispatch();
-  const cartItems = useSelector(state => state.cart);
-
-  let deliveryCost = 0;
-  let totalCost = 0;
-
-  cartItems.forEach((cartItem) => {
-    totalCost += cartItem.cost;
-  })
-
-  let finalCost = totalCost - deliveryCost;
-
 
   const onClickClose = (selectCartItem) => {
     dispatch(deleteDish(selectCartItem));
+  }
+
+  const onClickEdit = (cartItem) => {
+    handleEditCart(cartItem);
   }
 
   return (
@@ -75,7 +81,7 @@ export const ShoppingCart = (props) => {
                               data-toggle="modal"
                               className="action-icon"
                             >
-                              <i className="ti ti-pencil"></i>
+                              <i className="ti ti-pencil"  onClick={() => onClickEdit(cart)}></i>
                             </a>
                             &nbsp;
                             <a href="#" className="action-icon">

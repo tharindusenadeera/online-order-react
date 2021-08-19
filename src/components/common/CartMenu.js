@@ -4,6 +4,7 @@ import { Drawer, Button } from "antd";
 import { ShoppingCart } from "./ShoppingCart";
 import styled from "styled-components";
 import theme from "../../utils/theme";
+import { AddToCartModal } from "../items/AddToCartModal";
 
 const MenuWrap = styled.div`
   .ant-btn-ghost {
@@ -18,6 +19,7 @@ const MenuWrap = styled.div`
 
 export const CartMenu = () => {
   const [visible, setVisible] = useState(false);
+  const [editCartItem, setEditCartItem] = useState({});
   const cartItems = useSelector(state => state.cart);
 
   let deliveryCost = 0;
@@ -37,6 +39,14 @@ export const CartMenu = () => {
     setVisible(false);
   };
 
+  const handleEditCart = (item) => {
+    setEditCartItem(item)
+  }
+
+  const resetEditCart = () => {
+    setEditCartItem({});
+  }
+
   return (
     <MenuWrap>
       <Button type="ghost" onClick={showDrawer}>
@@ -45,9 +55,14 @@ export const CartMenu = () => {
           <span className="notification">{cartItems.length}</span>
         </span>
         <span className="cart-value" style={{color: "#bbc4c6"}}>
-          $&nbsp;<span className="value">{finalCost}</span>
+          $&nbsp;<span className="value">{finalCost.toFixed(2)}</span>
         </span>
       </Button>
+
+      { editCartItem && editCartItem.product &&
+        <AddToCartModal oldDish={editCartItem} resetEditCart={resetEditCart}/> 
+      }
+
       <Drawer
         title="Your Cart"
         placement="right"
@@ -55,7 +70,7 @@ export const CartMenu = () => {
         visible={visible}
         className="drawer-custom"
       >
-        <ShoppingCart />
+        <ShoppingCart handleEditCart={handleEditCart}/>
       </Drawer>
     </MenuWrap>
   );

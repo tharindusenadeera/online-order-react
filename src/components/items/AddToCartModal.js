@@ -4,7 +4,7 @@ import { Modal } from "antd";
 import styled from "styled-components";
 import { CartCollapse } from "./addToCart/CartCollapse";
 import theme from "../../utils/theme";
-import {addDish, updateDish }  from "../../actions/Cart";
+import {addDish, updateDish, deleteDish}  from "../../actions/Cart";
 import { InputNumber } from 'antd';
 import { GenerateUniqueId, CheckforMatch, GetItemFromId} from '../common/generateUniqueId';
 
@@ -23,21 +23,20 @@ const ContentWrapper = styled.div`
 `;
 
 export const AddToCartModal = (props) => {
-  const {product} = props;
+  const {product, oldDish, resetEditCart} = props;
 
   const initialDish = {
-    product: product,
-    addition: {},
-    other: {},
-    quantity: 1,
-    cost: parseFloat(product.price),
+    product: oldDish ? oldDish.product : product,
+    addition: oldDish ? oldDish.addition : {},
+    other: oldDish ? oldDish.other : {},
+    quantity: oldDish ? oldDish.quantity : 1,
+    cost: oldDish ? oldDish.cost : parseFloat(product.price),
   }
+  const initialModalVisiblity = oldDish ? true : false;
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(initialModalVisiblity);
   const [dish, setDish] = useState(initialDish);
   const cartItems = useSelector(state => state.cart);
- 
-
   const dispatch = useDispatch();
 
   const showModal = () => {
@@ -50,6 +49,7 @@ export const AddToCartModal = (props) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    resetEditCart();
   };
 
   const updateDishFunc = (updatedDish) => {
@@ -67,16 +67,30 @@ export const AddToCartModal = (props) => {
 
     if (isExistingItem) {
       const existingItem = GetItemFromId(id, cartItems);
-      const newQuantity = existingItem.quantity + dish.quantity;
+
+      // check if the existing item id is same as once before edit
+      const isSameItemEdit = oldDish ? existingItem?.id === oldDish?.id : false;
+
+      const newQuantity = isSameItemEdit ? dish.quantity : existingItem.quantity + dish.quantity;
       const updatedItem = {...existingItem, cost : newQuantity * parseFloat(dish.product.price), quantity: newQuantity};
 
       dispatch(updateDish(updatedItem));
+
+      // if the existing one is not the old one then the old one should delete
+      if (!isSameItemEdit) {
+        dispatch(deleteDish(oldDish));
+      }
+
     } else {
       dispatch(addDish({...dish, id: id}));
     }
 
     setIsModalVisible(false);
     setDish(initialDish);
+
+    if (resetEditCart instanceof Function){
+      resetEditCart();
+    }
   }
 
   const ModalContent = () => (
@@ -86,7 +100,7 @@ export const AddToCartModal = (props) => {
           <div className="bg-image">
             <img
               // src="http://assets.suelo.pl/soup/img/photos/modal-add.jpg"
-              src={process.env.REACT_APP_IMAGE_URL + product.main_image}
+              src={process.env.REACT_APP_IMAGE_URL + dish.product.main_image}
               alt=""
             />
           </div>
@@ -95,7 +109,7 @@ export const AddToCartModal = (props) => {
         <div className="modal-product-details">
           <div className="row align-items-center">
             <div className="col-9">
-              <h6 className="mb-1 product-modal-name">{product.name}</h6>
+              <h6 className="mb-1 product-modal-name">{dish.product.name}</h6>
               {/* <span className="text-muted product-modal-ingredients">
                 Pasta, Cheese, Tomatoes, Olives
               </span> */}
@@ -107,7 +121,7 @@ export const AddToCartModal = (props) => {
         </div>
 
         <div className="modal-body panel-details-container">
-          <CartCollapse updateDish={updateDishFunc} product={product} dish={dish}/>
+          <CartCollapse updateDish={updateDishFunc} product={dish.product} dish={dish}/>
         </div>
 
         <div className="modal-btn btn btn-block btn-lg" style={{background: '#25282a'}}>
