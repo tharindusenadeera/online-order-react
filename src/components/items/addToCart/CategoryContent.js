@@ -78,7 +78,7 @@ export const CategoryContent = (props) => {
 
     const updatedProduct = {...product, menu_option_categories : categories};
 
-    updateDish({...dish, product: updatedProduct, cost: dish.quantity * parseInt(dish.product.price)});
+    updateDish({...dish, product: updatedProduct, cost: dish.quantity * parseFloat(dish.product.price)});
   };
  
   return (
