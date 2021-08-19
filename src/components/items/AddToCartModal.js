@@ -30,7 +30,7 @@ export const AddToCartModal = (props) => {
     addition: {},
     other: {},
     quantity: 1,
-    cost: 0,
+    cost: parseFloat(product.price),
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -57,7 +57,7 @@ export const AddToCartModal = (props) => {
   }
 
   const onChangeQuantity = (qty) => {
-    setDish({...dish, quantity: qty, cost: dish.quantity * parseInt(dish.product.price)});
+    setDish({...dish, quantity: qty, cost: qty * parseFloat(dish.product.price)});
   }
 
   const addToCart = () => {
@@ -68,7 +68,7 @@ export const AddToCartModal = (props) => {
     if (isExistingItem) {
       const existingItem = GetItemFromId(id, cartItems);
       const newQuantity = existingItem.quantity + dish.quantity;
-      const updatedItem = {...existingItem, cost : newQuantity * parseInt(dish.product.price), quantity: newQuantity};
+      const updatedItem = {...existingItem, cost : newQuantity * parseFloat(dish.product.price), quantity: newQuantity};
 
       dispatch(updateDish(updatedItem));
     } else {
@@ -100,7 +100,7 @@ export const AddToCartModal = (props) => {
                 Pasta, Cheese, Tomatoes, Olives
               </span> */}
             </div>
-            <div className="col-3 text-lg text-right">{dish.cost}
+            <div className="col-3 text-lg text-right">{dish.cost.toFixed(2)}
               $<span className="product-modal-price"></span>
             </div>
           </div>
