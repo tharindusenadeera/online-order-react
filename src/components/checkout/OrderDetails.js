@@ -17,36 +17,38 @@ export const OrderDetails = ({ cartDetails }) => {
         <h5 className="mb-0">You order</h5>
       </div>
       <table className="cart-table">
-        {cartDetails &&
-          cartDetails.map((item, key) => {
-            return (
-              <tr key={key}>
-                <td className="title">
-                  <span className="name">
-                    <a href="#product-modal" data-toggle="modal">
-                      {item?.product?.name}
+        <tbody>
+          {cartDetails &&
+            cartDetails.map((item, key) => {
+              return (
+                <tr key={key}>
+                  <td className="title">
+                    <span className="name">
+                      <a href="#product-modal" data-toggle="modal">
+                        {item?.product?.name}
+                      </a>
+                    </span>
+                    <span className="caption text-muted">
+                      26”, deep-pan, thin-crust
+                    </span>
+                  </td>
+                  <td className="price">${item?.cost.toFixed(2)}</td>
+                  <td className="actions">
+                    <a
+                      href="#product-modal"
+                      data-toggle="modal"
+                      className="action-icon"
+                    >
+                      <i className="ti ti-pencil"></i>
                     </a>
-                  </span>
-                  <span className="caption text-muted">
-                    26”, deep-pan, thin-crust
-                  </span>
-                </td>
-                <td className="price">${item?.cost.toFixed(2)}</td>
-                <td className="actions">
-                  <a
-                    href="#product-modal"
-                    data-toggle="modal"
-                    className="action-icon"
-                  >
-                    <i className="ti ti-pencil"></i>
-                  </a>
-                  <a href="#" className="action-icon">
-                    <i className="ti ti-close"></i>
-                  </a>
-                </td>
-              </tr>
-            );
-          })}
+                    <a href="#" className="action-icon">
+                      <i className="ti ti-close"></i>
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
       </table>
       <div className="cart-summary">
         <div className="row">
