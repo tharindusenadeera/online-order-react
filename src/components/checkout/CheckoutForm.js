@@ -8,7 +8,7 @@ import "react-phone-input-2/lib/style.css";
 import { Checkbox } from "antd";
 import { useSelector } from "react-redux";
 
-export const CheckoutForm = ({ cartDetails}) => {
+export const CheckoutForm = ({ cartDetails }) => {
   const history = useHistory();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -53,7 +53,31 @@ export const CheckoutForm = ({ cartDetails}) => {
     return errors;
   };
 
+
+  const getOrderDetails = () => {
+    let orderObj = [];
+    cartDetails?.forEach((item) => {
+      const id = item.product.id;
+      const qty = item.quantity;
+
+      const categories = item.product.menu_option_categories;
+      const selectedCategory = [];
+
+      categories?.forEach((category) => {
+        const option = category?.selectOption?.menu_option_category_menu_option_id;
+        if (option) {
+          selectedCategory.push(option);
+        }
+      })
+
+      orderObj.push({id: id, qty: qty, menu_option_category_menu_option_id: selectedCategory});
+    })
+
+    return orderObj;
+  }
+
   const handleSubmit = () => {
+    const order_menu_items = getOrderDetails();
     const obj = {
       first_name: firstName,
       last_name: lastName,
@@ -61,9 +85,7 @@ export const CheckoutForm = ({ cartDetails}) => {
       contact_number: phoneNumber,
       order_type: mealType,
       payment_type: paymentType.selectedOption,
-      order_menu_items: [
-        { id: 1, qty: 1, menu_option_category_menu_option_id: [1, 2] },
-      ],
+      order_menu_items: order_menu_items
     };
 
     if (mealType == "deliver") {
@@ -113,7 +135,7 @@ export const CheckoutForm = ({ cartDetails}) => {
   const handleRadio = (e) => {
     setPaymentType({ selectedOption: e });
   };
-  console.log("radio", paymentType);
+
   return (
     <div className="col-xl-8 col-lg-7 order-lg-first">
       <div className="bg-white p-4 p-md-5 mb-4">
