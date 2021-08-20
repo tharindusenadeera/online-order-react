@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { Modal } from "antd";
 import styled from "styled-components";
@@ -33,11 +33,28 @@ export const AddToCartModal = (props) => {
     cost: oldDish ? oldDish.cost : parseFloat(product.price),
   }
   const initialModalVisiblity = oldDish ? true : false;
+  const initialQuantity = oldDish ? oldDish.product.qty : product.qty;
 
   const [isModalVisible, setIsModalVisible] = useState(initialModalVisiblity);
   const [dish, setDish] = useState(initialDish);
+  const [avalableQuantity, setAvailableQuantity] = useState(initialQuantity);
+
   const cartItems = useSelector(state => state.cart);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    let existingQuantity = dish.product.qty;
+
+    cartItems?.forEach(cartItem => {
+      if (dish.product.id === cartItem.product.id) {
+        existingQuantity-= cartItem.quantity;
+      }
+    })
+    // oldDish means edit mode
+    const remainingQuantity = oldDish ? existingQuantity + oldDish.quantity : existingQuantity;
+
+    setAvailableQuantity(remainingQuantity);
+  },[cartItems, dish, oldDish])
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -49,7 +66,10 @@ export const AddToCartModal = (props) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    resetEditCart();
+
+    if (resetEditCart instanceof Function){
+      resetEditCart();
+    }
   };
 
   const updateDishFunc = (updatedDish) => {
@@ -76,8 +96,8 @@ export const AddToCartModal = (props) => {
 
       dispatch(updateDish(updatedItem));
 
-      // if the existing one is not the old one then the old one should delete
-      if (!isSameItemEdit) {
+      //when edit if the existing one is not the old one then the old one should delete
+      if (oldDish && !isSameItemEdit) {
         dispatch(deleteDish(oldDish));
       }
 
@@ -125,7 +145,7 @@ export const AddToCartModal = (props) => {
         </div>
 
         <div className="modal-btn btn btn-block btn-lg" style={{background: '#25282a'}}>
-          <InputNumber size="large" min={1} max={dish.product.qty} defaultValue={1} value={dish.quantity} onChange={onChangeQuantity} />
+          <InputNumber size="large" min={1} max={avalableQuantity} defaultValue={1} value={dish.quantity} onChange={onChangeQuantity} />
         </div>
 
         <button
@@ -152,6 +172,7 @@ export const AddToCartModal = (props) => {
       <button
         type="link"
         className="btn btn-outline-secondary btn-sm"
+        disabled = {avalableQuantity <= 0}
         onClick={showModal}
       >
         <span>ADD TO CART</span>
