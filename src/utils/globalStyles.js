@@ -76,7 +76,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   //Menu
-  .menu-category .menu-category-title .title{
+  .menu-category .menu-category-title .title,.bg-dark.page-title h1,.bg-dark h5{
     color: ${theme.colors.white};
   }
   

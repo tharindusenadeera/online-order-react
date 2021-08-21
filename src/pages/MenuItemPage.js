@@ -13,22 +13,21 @@ export const MenuItemPage = (props) => {
 
   const CategoryHeading = {
     fontWeight: "100",
-    color: "white"
-  }
+    color: "white",
+  };
 
   useEffect(() => {
-
-    getCategories().then(res => {
+    getCategories().then((res) => {
       if (res.data.status === "success") {
         setCategories(res.data.data);
       }
     });
 
-    productsList().then(res => {
+    productsList().then((res) => {
       if (res.data.status === "success") {
         setProducts(res.data.data);
       }
-    })
+    });
     // setCategories(Constants.categories.data);
     // console.log("Constants.categories.data", Constants.categories.data);
   }, []);
@@ -55,34 +54,39 @@ export const MenuItemPage = (props) => {
         <div className="page-content">
           <div className="container">
             <div className="row no-gutters">
-
               <div className="col-md-3">
                 {/* <!-- Menu Navigation --> */}
                 <MenuItemNavigation categories={categories} />
               </div>
 
               <div className="col-md-9">
-
-                { categories.map((category) => {
-                    return (
-
+                {categories.map((category) => {
+                  return (
                     <div className="menu-category" key={category.id}>
                       <div className="menu-category-title">
-                        <div className="bg-image">
-                          <img
+                        <div
+                          className="bg-image"
+                          style={{
+                            backgroundImage: `url("http://assets.suelo.pl/soup/img/photos/menu-title-burgers.jpg")`,
+                          }}
+                        >
+                          {/* <img
                             src="http://assets.suelo.pl/soup/img/photos/menu-title-burgers.jpg"
                             alt=""
-                          />
+                          /> */}
                         </div>
-                        <h2 className="title" style={{...CategoryHeading}}>{category.name}</h2>
+                        <h2 className="title" style={{ ...CategoryHeading }}>
+                          {category.name}
+                        </h2>
                       </div>
 
                       <div className="menu-category-content">
-
-                        { products.map((product) => {
-
-                          return product.menu_category === category.id ?  (
-                            <div className="menu-item menu-list-item" key= {product.id}>
+                        {products.map((product) => {
+                          return product.menu_category === category.id ? (
+                            <div
+                              className="menu-item menu-list-item"
+                              key={product.id}
+                            >
                               <div className="row align-items-center">
                                 <div className="col-sm-6 mb-2 mb-sm-0">
                                   <h6 className="mb-0">{product.name}</h6>
@@ -92,26 +96,25 @@ export const MenuItemPage = (props) => {
                                 </div>
                                 <div className="col-sm-6 d-flex align-items-center justify-content-end">
                                   <span className="text-md mr-4">
-                                    <span className="text-muted">from&nbsp;</span> $
-                                    <span data-product-base-price>&nbsp;{product.price}</span>
+                                    <span className="text-muted">
+                                      from&nbsp;
+                                    </span>{" "}
+                                    $
+                                    <span data-product-base-price>
+                                      &nbsp;{product.price}
+                                    </span>
                                   </span>
-                                  <AddToCartModal product={product}/>
+                                  <AddToCartModal product={product} />
                                 </div>
                               </div>
                             </div>
-                          ) : null
-                          })
-                        }
+                          ) : null;
+                        })}
                       </div>
-
                     </div>
-                      
-                    )
-                  })
-                }
-            
+                  );
+                })}
               </div>
-
             </div>
           </div>
         </div>
