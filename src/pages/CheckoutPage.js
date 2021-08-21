@@ -6,7 +6,7 @@ import { OrderDetails } from "../components/checkout/OrderDetails";
 import { useSelector } from "react-redux";
 
 export const CheckoutPage = (props) => {
-  const cartDetails = useSelector((state) => state.cart)
+  const cartDetails = useSelector((state) => state.cart);
   return (
     <div id="body-wrapper" className="">
       <Header />
@@ -14,12 +14,12 @@ export const CheckoutPage = (props) => {
         {/* <!-- Page Title --> */}
         <div className="page-title bg-dark dark">
           {/* <!-- BG Image --> */}
-          <div className="bg-image bg-parallax">
-            <img
-              src="http://assets.suelo.pl/soup/img/photos/bg-croissant.jpg"
-              alt=""
-            />
-          </div>
+          <div
+            className="bg-image bg-parallax"
+            style={{
+              backgroundImage: `url("http://assets.suelo.pl/soup/img/photos/bg-croissant.jpg")`,
+            }}
+          ></div>
           <div className="container">
             <div className="row">
               <div className="col-lg-8 offset-lg-4">
@@ -37,9 +37,9 @@ export const CheckoutPage = (props) => {
           <div className="container">
             <div className="row">
               <div className="col-xl-4 col-lg-5">
-                <OrderDetails cartDetails={cartDetails}/>
+                <OrderDetails cartDetails={cartDetails} />
               </div>
-              <CheckoutForm cartDetails={cartDetails}/>
+              <CheckoutForm cartDetails={cartDetails} />
             </div>
           </div>
         </section>
