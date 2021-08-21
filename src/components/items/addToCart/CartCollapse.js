@@ -61,7 +61,7 @@ export const CartCollapse = (props) => {
       }
       
       <Panel header="Additions" key="112" showArrow={false}>
-        <AdditionsContent />
+        <AdditionsContent updateDish={updateDish} dish={dish}/>
       </Panel>
       <Panel header="Other" key="3111" showArrow={false} className="checked">
         <InputWrap>

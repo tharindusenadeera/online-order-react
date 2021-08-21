@@ -74,6 +74,7 @@ export const ShoppingCart = (props) => {
                                 )})
                             }
                           </td>
+                          <td>{cart.quantity}</td>
                           <td className="price">${cart.cost.toFixed(2)}</td>
                           <td className="actions">
                             <a

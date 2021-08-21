@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Checkbox } from "antd";
 import styled from "styled-components";
 import theme from "../../../utils/theme";
@@ -37,37 +37,51 @@ const Wrapper = styled.div`
   }
 `;
 
-function onChange(checkedValues) {
-  console.log("checked = ", checkedValues);
-}
+export const AdditionsContent = (props) => {
+  const {updateDish, dish} = props;
 
-//const plainOptions = ["Apple", "Pear", "Orange"];
+  // const addons = [
+  //   {
+  //     id : 1,
+  //     name: 'cheese',
+  //     status: 1,
+  //     pivot: {
+  //       manu_item_id: 1,
+  //       addon_id: 1
+  //     }
+  //   },
+  //   {
+  //     id : 2,
+  //     name: 'butter',
+  //     status: 1,
+  //     pivot: {
+  //       manu_item_id: 1,
+  //       addon_id: 2
+  //     }
+  //   },
+  // ]
 
-export const AdditionsContent = () => {
+  // dish.product.menu_item_addons = addons;
+
+  const onChange = (checkedValues) => {
+    updateDish({...dish, addition: checkedValues});
+  }
+
   return (
     <Wrapper>
       <Checkbox.Group
-        //options={plainOptions}
-        defaultValue={["Apple"]}
         onChange={onChange}
+        value={dish.addition}
         style={{ width: "100%" }}
       >
         <div className="row">
-          <div className="col-6 mb-2">
-            <Checkbox value="A">Chicken ($2.00)</Checkbox>
-          </div>
-          <div className="col-6 mb-2">
-            <Checkbox value="B">Angus Beef ($5.00)</Checkbox>
-          </div>
-          <div className="col-6 mb-2">
-            <Checkbox value="C">Beef ($3.00)</Checkbox>
-          </div>
-          <div className="col-6 mb-2">
-            <Checkbox value="D">Potato ($2.00)</Checkbox>
-          </div>
-          <div className="col-6 mb-2">
-            <Checkbox value="E">Paprika ($2.00)</Checkbox>
-          </div>
+          {dish.product.menu_item_addons?.map((addon) => {
+            return (
+              <div className="col-6 mb-2" key={addon.id}>
+                <Checkbox value={addon.id}>{addon.name}</Checkbox>
+              </div>
+            )
+          })}
         </div>
       </Checkbox.Group>
     </Wrapper>

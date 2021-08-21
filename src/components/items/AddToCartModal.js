@@ -27,7 +27,7 @@ export const AddToCartModal = (props) => {
 
   const initialDish = {
     product: oldDish ? oldDish.product : product,
-    addition: oldDish ? oldDish.addition : {},
+    addition: oldDish ? oldDish.addition : [],
     other: oldDish ? oldDish.other : {},
     quantity: oldDish ? oldDish.quantity : 1,
     cost: oldDish ? oldDish.cost : parseFloat(product.price),
@@ -92,7 +92,13 @@ export const AddToCartModal = (props) => {
       const isSameItemEdit = oldDish ? existingItem?.id === oldDish?.id : false;
 
       const newQuantity = isSameItemEdit ? dish.quantity : existingItem.quantity + dish.quantity;
-      const updatedItem = {...existingItem, cost : newQuantity * parseFloat(dish.product.price), quantity: newQuantity};
+      const updatedItem = {
+        ...existingItem,
+        cost : newQuantity * parseFloat(dish.product.price),
+        quantity: newQuantity,
+        addition: dish.addition,
+        other: dish.other,
+      };
 
       dispatch(updateDish(updatedItem));
 

@@ -70,7 +70,7 @@ export const CheckoutForm = ({ cartDetails }) => {
         }
       })
 
-      orderObj.push({id: id, qty: qty, menu_option_category_menu_option_id: selectedCategory});
+      orderObj.push({id: id, qty: qty, menu_option_category_menu_option_id: selectedCategory, addon_id: item.addition});
     })
 
     return orderObj;
@@ -96,7 +96,7 @@ export const CheckoutForm = ({ cartDetails }) => {
       obj.delivery_address_line_2 = secondAddressLine;
       obj.delivery_phone_number = isSame ? phoneNumber : deliveryPhoneNumber;
     }
-
+    
     if (!firstName || !lastName || !phoneNumber || !mealType) {
       setErrorObj({
         all: "Required !",
