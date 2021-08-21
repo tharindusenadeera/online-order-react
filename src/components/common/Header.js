@@ -1,11 +1,21 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { CartMenu } from "./CartMenu";
+import { Drawer, Button } from "antd";
+import styled from "styled-components";
+
+const ButtonAnt = styled(Button)`
+  border: unset;
+`;
 
 export const Header = (props) => {
   const { onclick } = props;
 
-  const handleonClick = () => {
-    onclick();
+  const [visible, setVisible] = useState(false);
+  const showDrawer = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
   };
 
   return (
@@ -190,12 +200,29 @@ export const Header = (props) => {
       {/* Header */}
       <header id="header-mobile" class="light">
         <div class="module module-nav-toggle">
-          <a href="#" id="nav-toggle" data-toggle="panel-mobile">
+          {/* <a href="#" id="nav-toggle" data-toggle="panel-mobile">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
-          </a>
+          </a> */}
+          <ButtonAnt id="nav-toggle" type="ghost" onClick={showDrawer}>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </ButtonAnt>
+          <Drawer
+            title="Basic Drawer"
+            placement="right"
+            onClose={onClose}
+            visible={visible}
+            className="drawer-custom"
+          >
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Drawer>
         </div>
 
         <div class="module module-logo">

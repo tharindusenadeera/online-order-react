@@ -2,17 +2,12 @@ import React, { useState } from "react";
 
 import { Header } from "../components/common/Header";
 import { Footer } from "../components/common/Footer";
-import { HeaderMobile } from "../components/common/HeaderMobile";
 
 export const ConfirmationPage = (props) => {
   return (
     <div id="body-wrapper" className="">
       {/* <!-- Header --> */}
       <Header />
-      {/* <!-- Header / End --> */}
-
-      {/* <!-- Header --> */}
-      <HeaderMobile />
       {/* <!-- Header / End --> */}
 
       {/* <!-- Content --> */}
