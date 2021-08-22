@@ -56,6 +56,18 @@ export const ShoppingCart = (props) => {
     handleEditCart(cartItem);
   };
 
+  const getAdditionsName = (cart) => {
+    let str = "";
+    cart.addition.forEach((cartItem) => {
+      cart.product.active_menu_item_addons.forEach((item) => {
+        if (cartItem === item.pivot.addon_id) {
+          str += item.name + ' ';
+        }
+      })
+    })
+    return str;
+  }
+
   return (
     <div className="h-100">
       {/* Empty Screen */}
@@ -92,11 +104,19 @@ export const ShoppingCart = (props) => {
                                 >
                                   {category?.selectOption.name}&nbsp;
                                 </span>
-                                // <span className="caption text-muted">Large (500g)</span>
+                                // <span className="caption text-muted" key={'c'}>Large (500g)</span>
                               )
                             );
                           }
                         )}
+
+                        {/* addons display */}
+                        {cart.addition.length > 0 && (
+                          <div>
+                            <span className="caption text-muted" >{getAdditionsName(cart)}</span>
+                          </div>
+                        )}
+
                       </td>
                       <td>{cart.quantity}</td>
                       <td className="price">${cart.cost.toFixed(2)}</td>

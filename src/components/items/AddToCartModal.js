@@ -31,6 +31,7 @@ export const AddToCartModal = (props) => {
     other: oldDish ? oldDish.other : {},
     quantity: oldDish ? oldDish.quantity : 1,
     cost: oldDish ? oldDish.cost : parseFloat(product.price),
+    addonCost: oldDish ? oldDish.addonCost : 0
   }
   const initialModalVisiblity = oldDish ? true : false;
   const initialQuantity = oldDish ? oldDish.product.qty : product.qty;
@@ -77,14 +78,13 @@ export const AddToCartModal = (props) => {
   }
 
   const onChangeQuantity = (qty) => {
-    setDish({...dish, quantity: qty, cost: qty * parseFloat(dish.product.price)});
+    setDish({...dish, quantity: qty, cost: qty * (parseFloat(dish.product.price) + dish.addonCost)});
   }
 
   const addToCart = () => {
 
     const id = GenerateUniqueId(dish.product);
     const isExistingItem = CheckforMatch(id, cartItems);
-
     if (isExistingItem) {
       const existingItem = GetItemFromId(id, cartItems);
 
@@ -94,7 +94,7 @@ export const AddToCartModal = (props) => {
       const newQuantity = isSameItemEdit ? dish.quantity : existingItem.quantity + dish.quantity;
       const updatedItem = {
         ...existingItem,
-        cost : newQuantity * parseFloat(dish.product.price),
+        cost: newQuantity * (parseFloat(dish.product.price) + dish.addonCost),
         quantity: newQuantity,
         addition: dish.addition,
         other: dish.other,
@@ -109,6 +109,10 @@ export const AddToCartModal = (props) => {
 
     } else {
       dispatch(addDish({...dish, id: id}));
+      // if the new item is different from old (key changed) then prev should delete
+      if (oldDish) {
+        dispatch(deleteDish(oldDish));
+      }
     }
 
     setIsModalVisible(false);
