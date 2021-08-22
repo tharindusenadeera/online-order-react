@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
 import PhoneInput from "react-phone-input-2";
 import { addOrder } from "../../api/order";
 import { cities } from "../../constants/Constants";
@@ -7,9 +8,11 @@ import { ModalPopup } from "../common/ModalPopup";
 import { Checkbox, Radio } from "antd";
 import { RadioGroupStyle } from "../../assests/styles/RadioGroupStyle";
 import "react-phone-input-2/lib/style.css";
+import { addDish, updateDish } from "../../actions/Cart";
 
 export const CheckoutForm = ({ cartDetails }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState();
@@ -28,24 +31,25 @@ export const CheckoutForm = ({ cartDetails }) => {
   const [isSame, setIsSame] = useState(false);
 
   const validation = (data) => {
+    console.log("data", data);
     let errors = {};
-    if (!firstName) {
+    if (!data.first_name) {
       errors.firstName = "Required !";
-    } else if (!lastName) {
+    } else if (!data.last_name) {
       errors.lastName = "Required !";
-    } else if (!phoneNumber) {
+    } else if (!data.contact_number) {
       errors.phoneNumber = "Required !";
-    } else if (!mealType) {
+    } else if (!data.order_type) {
       errors.mealType = "Required !";
-    } else if (!paymentType) {
+    } else if (!data.payment_type) {
       errors.paymentType = "Required !";
-    } else if (mealType == "deliver" && !firstAddressLine) {
+    } else if (data.order_type == "deliver" && !data.firstAddressLine) {
       errors.firstAddressLine = "Required !";
-    } else if (mealType == "deliver" && !secondAddressLine) {
+    } else if (data.order_type == "deliver" && !data.secondAddressLine) {
       errors.secondAddressLine = "Required !";
-    } else if (mealType == "deliver" && !deliveryPhoneNumber) {
+    } else if (data.order_type == "deliver" && !data.deliveryPhoneNumber) {
       errors.deliveryPhoneNumber = "Required !";
-    } else if (mealType == "deliver" && !city) {
+    } else if (data.order_type == "deliver" && !data.city) {
       errors.city = "Required !";
     }
 
@@ -102,7 +106,7 @@ export const CheckoutForm = ({ cartDetails }) => {
       obj.delivery_phone_number = isSame ? phoneNumber : deliveryPhoneNumber;
     }
 
-    if (!firstName || !lastName || !phoneNumber || !mealType) {
+    if (!firstName && !lastName && !phoneNumber && !mealType) {
       setErrorObj({
         all: "Required !",
       });
@@ -112,14 +116,17 @@ export const CheckoutForm = ({ cartDetails }) => {
         addOrder(obj)
           .then((res) => {
             if (res.data.status == "success") {
+              dispatch(addDish([]));
+              dispatch(updateDish([]));
               if (paymentType.selectedOption == "card") {
+                console.log("Order done");
                 history.push({
                   pathname: "/confirmed",
-                  state: { orderId: res?.data?.data?.order_id },
                 });
               } else {
                 history.push({
                   pathname: "/payment",
+                  state: { orderId: res?.data?.data?.order_id },
                 });
               }
             } else {
@@ -394,9 +401,12 @@ export const CheckoutForm = ({ cartDetails }) => {
           </div> */}
           <div className="radio col-md-12 col-sm-12 form-group">
             <RadioGroupStyle>
-              <Radio.Group>
-                <Radio value={1}>Online Payment</Radio>
-                <Radio value={2}>Credit Card</Radio>
+              <Radio.Group
+                onChange={(e) => handleRadio(e.target.value)}
+                value={paymentType.selectedOption}
+              >
+                <Radio value={"online"}>Online Card Payment</Radio>
+                <Radio value={"card"}>Pay at Store</Radio>
               </Radio.Group>
             </RadioGroupStyle>
             {/* <div className="col-md-8 col-sm-8 form-group">
