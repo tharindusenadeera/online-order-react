@@ -19,18 +19,16 @@ export const CategoryContent = (props) => {
   const onChange = (e) => {
     const selectOptionId = e.target.value;
     const selectedCategory = e.target.category;
-
     const product = dish.product;
 
     const selectOption = selectedCategory?.menu_item_options?.find(
       (option) => option.id === selectOptionId
     );
     const selectCategory = { ...selectedCategory, selectOption: selectOption };
-
-    const categories = product?.menu_option_categories.filter(
-      (category) => category.id !== selectCategory.id
-    );
-    categories.push(selectCategory);
+    
+    const categories = product?.menu_option_categories.map(
+          (category) => category.id === selectCategory.id ? selectCategory : category
+        );
 
     const updatedProduct = { ...product, menu_option_categories: categories };
 
