@@ -106,7 +106,7 @@ export const CheckoutForm = ({ cartDetails }) => {
       obj.delivery_phone_number = isSame ? phoneNumber : deliveryPhoneNumber;
     }
 
-    if (!firstName || !lastName || !phoneNumber || !mealType) {
+    if (!firstName && !lastName && !phoneNumber && !mealType) {
       setErrorObj({
         all: "Required !",
       });
@@ -119,13 +119,14 @@ export const CheckoutForm = ({ cartDetails }) => {
               dispatch(addDish([]));
               dispatch(updateDish([]));
               if (paymentType.selectedOption == "card") {
+                console.log("Order done");
                 history.push({
                   pathname: "/confirmed",
-                  state: { orderId: res?.data?.data?.order_id },
                 });
               } else {
                 history.push({
                   pathname: "/payment",
+                  state: { orderId: res?.data?.data?.order_id },
                 });
               }
             } else {
