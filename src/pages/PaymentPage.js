@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { Header } from "../components/common/Header";
 import { Footer } from "../components/common/Footer";
 import { CheckoutForm } from "../components/checkout/CheckoutForm";
@@ -7,7 +8,8 @@ import { useSelector } from "react-redux";
 import { PaymentForm } from "../components/checkout/PaymentForm";
 
 export const PaymentPage = (props) => {
-  const cartDetails = useSelector((state) => state.cart)
+    const location = useLocation();
+    let order_id = location.state.order_id;
   return (
     <div id="body-wrapper" className="">
       <Header />
@@ -33,7 +35,7 @@ export const PaymentPage = (props) => {
           </div>
         </div>
 
-        <PaymentForm />
+        <PaymentForm order_id={order_id}/>
 
         {/* <!-- Footer --> */}
         <Footer />

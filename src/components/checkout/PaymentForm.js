@@ -128,7 +128,7 @@ const CheckoutForm = () => {
       orderPayment({
         payment_type: "stripe",
         stripeToken: payload.paymentMethod.id,
-        order_id: 243,
+        order_id: order_id,
       }).then((res) => {
         console.log("res ---", res);
         if (res.data.status == "success") {
@@ -209,11 +209,11 @@ const ELEMENTS_OPTIONS = {
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(process.env.REACT_APP_API_STRIPE_PUBLIC_KEY);
 
-export const PaymentForm = () => {
+export const PaymentForm = ({ order_id }) => {
   return (
     <div className="AppWrapper">
       <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
-        <CheckoutForm />
+        <CheckoutForm order_id={order_id} />
       </Elements>
     </div>
   );

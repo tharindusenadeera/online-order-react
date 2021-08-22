@@ -4,7 +4,8 @@ import PhoneInput from "react-phone-input-2";
 import { addOrder } from "../../api/order";
 import { cities } from "../../constants/Constants";
 import { ModalPopup } from "../common/ModalPopup";
-import { Checkbox } from "antd";
+import { Checkbox, Radio } from "antd";
+import { RadioGroupStyle } from "../../assests/styles/RadioGroupStyle";
 import "react-phone-input-2/lib/style.css";
 
 export const CheckoutForm = ({ cartDetails }) => {
@@ -114,6 +115,7 @@ export const CheckoutForm = ({ cartDetails }) => {
               if (paymentType.selectedOption == "card") {
                 history.push({
                   pathname: "/confirmed",
+                  state: { orderId: res?.data?.data?.order_id },
                 });
               } else {
                 history.push({
@@ -391,7 +393,13 @@ export const CheckoutForm = ({ cartDetails }) => {
             </label>
           </div> */}
           <div className="radio col-md-12 col-sm-12 form-group">
-            <div className="col-md-8 col-sm-8 form-group">
+            <RadioGroupStyle>
+              <Radio.Group>
+                <Radio value={1}>Online Payment</Radio>
+                <Radio value={2}>Credit Card</Radio>
+              </Radio.Group>
+            </RadioGroupStyle>
+            {/* <div className="col-md-8 col-sm-8 form-group">
               <label className="custom-control custom-radio">
                 <input
                   type="radio"
@@ -425,7 +433,7 @@ export const CheckoutForm = ({ cartDetails }) => {
                   (Call restaurant for card payments... 0889008068)
                 </div>
               </label>
-            </div>
+            </div> */}
           </div>
 
           {/* <div className="col-md-4 col-sm-6 form-group">
