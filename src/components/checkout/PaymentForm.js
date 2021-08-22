@@ -128,13 +128,13 @@ const CheckoutForm = () => {
       orderPayment({
         payment_type: "stripe",
         stripeToken: payload.paymentMethod.id,
-        order_id: order_id,
+        // order_id: order_id,
       }).then((res) => {
         console.log("res ---", res);
         if (res.data.status == "success") {
-          history.push({
-            pathname: "/confirmed",
-          });
+          // history.push({
+          //   pathname: "/confirmed",
+          // });
         }
       });
     }

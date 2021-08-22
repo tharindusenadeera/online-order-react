@@ -38,6 +38,7 @@ export const AddToCartModal = (props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(initialModalVisiblity);
   const [dish, setDish] = useState(initialDish);
+  const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [avalableQuantity, setAvailableQuantity] = useState(initialQuantity);
 
   const cartItems = useSelector(state => state.cart);
@@ -56,6 +57,16 @@ export const AddToCartModal = (props) => {
 
     setAvailableQuantity(remainingQuantity);
   },[cartItems, dish, oldDish])
+
+  useEffect(() => {
+    let status = false;
+    dish?.product?.menu_option_categories.forEach((category)=>{
+      if (category.selectOption) {
+        status = true;
+      }
+    })
+    setIsCategorySelect(status);
+  },[dish])
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -160,6 +171,7 @@ export const AddToCartModal = (props) => {
 
         <button
           type="button"
+          disabled={!isCategorySelect}
           className="modal-btn btn btn-secondary btn-block btn-lg"
           data-action="add-to-cart"
           onClick={addToCart}
