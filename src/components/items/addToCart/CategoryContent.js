@@ -35,7 +35,7 @@ export const CategoryContent = (props) => {
     updateDish({
       ...dish,
       product: updatedProduct,
-      cost: dish.quantity * parseFloat(dish.product.price),
+      cost: dish.quantity *(parseFloat(dish.product.price) + dish.addonCost),
     });
   };
 

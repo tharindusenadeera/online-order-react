@@ -41,7 +41,16 @@ export const AdditionsContent = (props) => {
   const {updateDish, dish} = props;
 
   const onChange = (checkedValues) => {
-    updateDish({...dish, addition: checkedValues});
+    let addonCost = 0;
+
+    dish.product.active_menu_item_addons.forEach((addon) => {
+      checkedValues.forEach((id)=> {
+        if (id === addon.pivot.addon_id) {
+          addonCost+= parseFloat(addon.pivot.amount);
+        }
+      })
+    })
+    updateDish({...dish, addition: checkedValues, cost: dish.quantity * (parseFloat(dish.product.price) + addonCost), addonCost: addonCost});
   }
 
   return (
