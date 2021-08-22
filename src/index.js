@@ -15,6 +15,7 @@ import thunk  from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import reducers from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { PaymentPage } from "./pages/PaymentPage";
 
 
 const store = createStore(reducers, composeWithDevTools(compose(applyMiddleware(thunk))));
@@ -29,6 +30,7 @@ ReactDOM.render(
             <Route path="/confirmed" component={ConfirmationPage} />
             <Route path="/checkout" component={CheckoutPage} />
             <Route path="/item" component={ItemDetail} />
+            <Route path="/payment" component={PaymentPage} />
           </React.Fragment>
         </Switch>
       </Router>

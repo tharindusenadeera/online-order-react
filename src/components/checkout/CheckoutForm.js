@@ -4,9 +4,8 @@ import PhoneInput from "react-phone-input-2";
 import { addOrder } from "../../api/order";
 import { cities } from "../../constants/Constants";
 import { ModalPopup } from "../common/ModalPopup";
-import "react-phone-input-2/lib/style.css";
 import { Checkbox } from "antd";
-import { useSelector } from "react-redux";
+import "react-phone-input-2/lib/style.css";
 
 export const CheckoutForm = ({ cartDetails }) => {
   const history = useHistory();
@@ -21,7 +20,7 @@ export const CheckoutForm = ({ cartDetails }) => {
   const [deliverySecondName, setDeliverySecondName] = useState("");
   const [deliveryPhoneNumber, setDeliveryPhoneNumber] = useState();
   const [mealType, setMealType] = useState("");
-  const [paymentType, setPaymentType] = useState({selectedOption: ''});
+  const [paymentType, setPaymentType] = useState({ selectedOption: "" });
   const [visible, setVisible] = useState(false);
   const [errorObj, setErrorObj] = useState({});
   const [modelStatus, setModalStatus] = useState("");
@@ -53,7 +52,6 @@ export const CheckoutForm = ({ cartDetails }) => {
     return errors;
   };
 
-
   const getOrderDetails = () => {
     let orderObj = [];
     cartDetails?.forEach((item) => {
@@ -64,17 +62,23 @@ export const CheckoutForm = ({ cartDetails }) => {
       const selectedCategory = [];
 
       categories?.forEach((category) => {
-        const option = category?.selectOption?.menu_option_category_menu_option_id;
+        const option =
+          category?.selectOption?.menu_option_category_menu_option_id;
         if (option) {
           selectedCategory.push(option);
         }
-      })
+      });
 
-      orderObj.push({id: id, qty: qty, menu_option_category_menu_option_id: selectedCategory, addon_id: item.addition});
-    })
+      orderObj.push({
+        id: id,
+        qty: qty,
+        menu_option_category_menu_option_id: selectedCategory,
+        addon_id: item.addition,
+      });
+    });
 
     return orderObj;
-  }
+  };
 
   const handleSubmit = () => {
     const order_menu_items = getOrderDetails();
@@ -85,7 +89,7 @@ export const CheckoutForm = ({ cartDetails }) => {
       contact_number: phoneNumber,
       order_type: mealType,
       payment_type: paymentType.selectedOption,
-      order_menu_items: order_menu_items
+      order_menu_items: order_menu_items,
     };
 
     if (mealType == "deliver") {
@@ -96,7 +100,7 @@ export const CheckoutForm = ({ cartDetails }) => {
       obj.delivery_address_line_2 = secondAddressLine;
       obj.delivery_phone_number = isSame ? phoneNumber : deliveryPhoneNumber;
     }
-    
+
     if (!firstName || !lastName || !phoneNumber || !mealType) {
       setErrorObj({
         all: "Required !",
@@ -107,9 +111,15 @@ export const CheckoutForm = ({ cartDetails }) => {
         addOrder(obj)
           .then((res) => {
             if (res.data.status == "success") {
-              history.push({
-                pathname: "/confirmed",
-              });
+              if (paymentType.selectedOption == "card") {
+                history.push({
+                  pathname: "/confirmed",
+                });
+              } else {
+                history.push({
+                  pathname: "/payment",
+                });
+              }
             } else {
               setModalStatus("error");
               setVisible(true);
@@ -178,7 +188,11 @@ export const CheckoutForm = ({ cartDetails }) => {
               >
                 <option value=""></option>
                 {cities?.data.map((item, key) => {
-                  return <option key={key} value={item.id}>{item.name}</option>;
+                  return (
+                    <option key={key} value={item.id}>
+                      {item.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -383,9 +397,10 @@ export const CheckoutForm = ({ cartDetails }) => {
                   type="radio"
                   name="payment_type"
                   className="custom-control-input"
-                  disabled={true}
-                  value="online" 
-                  checked={paymentType.selectedOption == 'online'}
+                  disabled={false}
+                  value="online"
+                  checked={paymentType.selectedOption == "online"}
+                  onChange={(e) => handleRadio(e.target.value)}
                 />
                 <span className="custom-control-indicator"></span>
                 <span className="custom-control-description">
@@ -401,7 +416,7 @@ export const CheckoutForm = ({ cartDetails }) => {
                   name="payment_type"
                   className="custom-control-input"
                   value="card"
-                  checked={paymentType.selectedOption == 'card'}
+                  checked={paymentType.selectedOption == "card"}
                   onChange={(e) => handleRadio(e.target.value)}
                 />
                 <span className="custom-control-indicator"></span>
@@ -432,6 +447,7 @@ export const CheckoutForm = ({ cartDetails }) => {
             <Fragment />
           )}
         </div>
+
         <div className="col-md-12 col-sm-12 form-group">
           <span style={{ color: "red" }}>*Cash on delivery *</span> We don’t do
           cash on delivery due to COVID-19 restrictions
