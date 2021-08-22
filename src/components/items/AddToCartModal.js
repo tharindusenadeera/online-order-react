@@ -84,7 +84,6 @@ export const AddToCartModal = (props) => {
 
     const id = GenerateUniqueId(dish.product);
     const isExistingItem = CheckforMatch(id, cartItems);
-
     if (isExistingItem) {
       const existingItem = GetItemFromId(id, cartItems);
 
@@ -109,6 +108,10 @@ export const AddToCartModal = (props) => {
 
     } else {
       dispatch(addDish({...dish, id: id}));
+      // if the new item is different from old (key changed) then prev should delete
+      if (oldDish) {
+        dispatch(deleteDish(oldDish));
+      }
     }
 
     setIsModalVisible(false);
