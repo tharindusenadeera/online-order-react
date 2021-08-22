@@ -40,29 +40,6 @@ const Wrapper = styled.div`
 export const AdditionsContent = (props) => {
   const {updateDish, dish} = props;
 
-  // const addons = [
-  //   {
-  //     id : 1,
-  //     name: 'cheese',
-  //     status: 1,
-  //     pivot: {
-  //       manu_item_id: 1,
-  //       addon_id: 1
-  //     }
-  //   },
-  //   {
-  //     id : 2,
-  //     name: 'butter',
-  //     status: 1,
-  //     pivot: {
-  //       manu_item_id: 1,
-  //       addon_id: 2
-  //     }
-  //   },
-  // ]
-
-  // dish.product.menu_item_addons = addons;
-
   const onChange = (checkedValues) => {
     updateDish({...dish, addition: checkedValues});
   }
@@ -75,10 +52,10 @@ export const AdditionsContent = (props) => {
         style={{ width: "100%" }}
       >
         <div className="row">
-          {dish.product.menu_item_addons?.map((addon) => {
+          {dish.product.active_menu_item_addons?.map((addon) => {
             return (
               <div className="col-6 mb-2" key={addon.id}>
-                <Checkbox value={addon.id}>{addon.name}</Checkbox>
+                <Checkbox value={addon.pivot.addon_id}>{addon.name}&nbsp;(&nbsp;${addon.pivot.amount}&nbsp;)</Checkbox>
               </div>
             )
           })}
