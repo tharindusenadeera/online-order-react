@@ -2,7 +2,8 @@
 // Learn how to accept a payment using the official Stripe docs.
 // https://www.stripe.com/docs/payments/integration-builder
 
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
+import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -11,8 +12,8 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import "./styles.css";
-import { Fragment } from "react";
 import { orderPayment } from "../../api/order";
+import { ModalPopup } from "../common/ModalPopup";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -85,14 +86,21 @@ const ResetButton = ({ onClick }) => (
   </button>
 );
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ order_id }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const history = useHistory();
   const [error, setError] = useState(null);
   const [cardComplete, setCardComplete] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [cardName, setCardName] = useState("");
+  const [errorPopupVisible, setErrorPopupVisible] = useState(false);
+  const [modelStatus, setModelStatus] = useState("");
+
+  const handleOk = () => {
+    setErrorPopupVisible(false);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -123,7 +131,6 @@ const CheckoutForm = () => {
     if (payload.error) {
       setError(payload.error);
     } else {
-      console.log("payload.paymentMethod", payload.paymentMethod);
       setPaymentMethod(payload.paymentMethod);
       orderPayment({
         payment_type: "stripe",
@@ -135,6 +142,9 @@ const CheckoutForm = () => {
           history.push({
             pathname: "/confirmed",
           });
+        } else {
+          setModelStatus("error")
+          setErrorPopupVisible(true);
         }
       });
     }
@@ -145,8 +155,6 @@ const CheckoutForm = () => {
     setProcessing(false);
     setPaymentMethod(null);
   };
-
-  console.log("paymentMethod", paymentMethod);
 
   return (
     <form className="Form" onSubmit={handleSubmit}>
@@ -193,6 +201,17 @@ const CheckoutForm = () => {
           </div>
         </div>
       </div>
+
+      {errorPopupVisible ? (
+        <ModalPopup
+          visible={errorPopupVisible}
+          hideCancel={true}
+          onOK={handleOk}
+          status={modelStatus}
+        />
+      ) : (
+        <Fragment />
+      )}
     </form>
   );
 };
