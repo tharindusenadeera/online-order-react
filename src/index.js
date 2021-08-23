@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
-import App from "./App";
 import "antd/dist/antd.css";
 import "./index.css";
+import App from "./App";
 import { ItemDetail } from "./pages/ItemDetail";
 import { ConfirmationPage } from "./pages/ConfirmationPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
@@ -15,6 +15,7 @@ import thunk  from 'redux-thunk';
 import {createStore, applyMiddleware, compose} from 'redux';
 import reducers from './reducers';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { PaymentPage } from "./pages/PaymentPage";
 
 
 const store = createStore(reducers, composeWithDevTools(compose(applyMiddleware(thunk))));
@@ -29,6 +30,7 @@ ReactDOM.render(
             <Route path="/confirmed" component={ConfirmationPage} />
             <Route path="/checkout" component={CheckoutPage} />
             <Route path="/item" component={ItemDetail} />
+            <Route path="/payment" component={PaymentPage} />
           </React.Fragment>
         </Switch>
       </Router>

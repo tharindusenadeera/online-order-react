@@ -2,11 +2,13 @@ import React from "react";
 import { Header } from "../components/common/Header";
 import { Footer } from "../components/common/Footer";
 import { PromotionFooter } from "../components/common/PromotionFooter";
+import { HeaderMobile } from "../components/common/HeaderMobile";
 
 export const ItemDetail = (props) => {
   return (
     <div id="body-wrapper">
       <Header />
+      <HeaderMobile />
       <div id="content">
         {/* <!-- Section --> */}
         <section className="section bg-light">
