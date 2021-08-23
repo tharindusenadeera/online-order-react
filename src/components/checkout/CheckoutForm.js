@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import PhoneInput from "react-phone-input-2";
 import { addOrder } from "../../api/order";
-import { cities } from "../../constants/Constants";
+import { cities, timeSlots } from "../../constants/Constants";
 import { ModalPopup } from "../common/ModalPopup";
 import { Checkbox, Radio } from "antd";
 import { RadioGroupStyle } from "../../assests/styles/RadioGroupStyle";
@@ -29,6 +29,7 @@ export const CheckoutForm = ({ cartDetails }) => {
   const [errorObj, setErrorObj] = useState({});
   const [modelStatus, setModalStatus] = useState("");
   const [isSame, setIsSame] = useState(false);
+  const [deliveryTime, setDeliveryTime] = useState("");
 
   const validation = (data) => {
     console.log("data", data);
@@ -43,13 +44,13 @@ export const CheckoutForm = ({ cartDetails }) => {
       errors.mealType = "Required !";
     } else if (!data.payment_type) {
       errors.paymentType = "Required !";
-    } else if (data.order_type == "deliver" && !data.firstAddressLine) {
+    } else if (data.order_type == "deliver" && !data.delivery_address_line_1) {
       errors.firstAddressLine = "Required !";
-    } else if (data.order_type == "deliver" && !data.secondAddressLine) {
+    } else if (data.order_type == "deliver" && !data.delivery_address_line_2) {
       errors.secondAddressLine = "Required !";
-    } else if (data.order_type == "deliver" && !data.deliveryPhoneNumber) {
+    } else if (data.order_type == "deliver" && !data.delivery_phone_number) {
       errors.deliveryPhoneNumber = "Required !";
-    } else if (data.order_type == "deliver" && !data.city) {
+    } else if (data.order_type == "deliver" && !data.delivery_city_id) {
       errors.city = "Required !";
     }
 
@@ -104,6 +105,7 @@ export const CheckoutForm = ({ cartDetails }) => {
       obj.delivery_address_line_1 = firstAddressLine;
       obj.delivery_address_line_2 = secondAddressLine;
       obj.delivery_phone_number = isSame ? phoneNumber : deliveryPhoneNumber;
+      obj.delivery_time = deliveryTime;
     }
 
     if (!firstName && !lastName && !phoneNumber && !mealType) {
@@ -113,31 +115,33 @@ export const CheckoutForm = ({ cartDetails }) => {
     } else {
       let errors = validation(obj);
       if (!Object.keys(errors).length) {
-        addOrder(obj)
-          .then((res) => {
-            if (res.data.status == "success") {
-              dispatch(addDish([]));
-              dispatch(updateDish([]));
-              if (paymentType.selectedOption == "card") {
-                console.log("Order done");
-                history.push({
-                  pathname: "/confirmed",
-                });
-              } else {
-                history.push({
-                  pathname: "/payment",
-                  state: { orderId: res?.data?.data?.order_id },
-                });
-              }
-            } else {
-              setModalStatus("error");
-              setVisible(true);
-            }
-          })
-          .catch((error) => {
-            setModalStatus("error");
-            setVisible(true);
+        // addOrder(obj)
+        //   .then((res) => {
+        //     if (res.data.status == "success") {
+        console.log("Order success");
+        if (paymentType.selectedOption == "card") {
+          console.log("Order done");
+          history.push({
+            pathname: "/confirmed",
           });
+        } else {
+          history.push({
+            pathname: "/payment",
+            state: { orderId: 1 },
+          });
+        }
+        dispatch(addDish([]));
+        dispatch(updateDish([]));
+        // } else {
+        //   console.log('res.data.status');
+        //   setModalStatus("error");
+        //   setVisible(true);
+        // }
+        // })
+        // .catch((error) => {
+        //   setModalStatus("error");
+        //   setVisible(true);
+        // });
       }
     }
   };
@@ -154,7 +158,7 @@ export const CheckoutForm = ({ cartDetails }) => {
   const handleRadio = (e) => {
     setPaymentType({ selectedOption: e });
   };
-
+  console.log("paymentType.selectedOption", paymentType.selectedOption);
   return (
     <div className="col-xl-8 col-lg-7 order-lg-first">
       <div className="bg-white p-4 p-md-5 mb-4">
@@ -286,10 +290,20 @@ export const CheckoutForm = ({ cartDetails }) => {
               <div className="form-group col-sm-6">
                 <label>Delivery time:</label>
                 <div className="select-container">
-                  <select className="form-control">
-                    <option>As fast as possible</option>
-                    <option>In one hour</option>
-                    <option>In two hours</option>
+                  <select
+                    className="form-control"
+                    onChange={(e) => {
+                      setDeliveryTime(e.target.value);
+                    }}
+                  >
+                    <option></option>
+                    {timeSlots.map((item, key) => {
+                      return (
+                        <option key={key} value={item.value}>
+                          {item.value}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
               </div>
