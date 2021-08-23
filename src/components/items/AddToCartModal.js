@@ -59,7 +59,7 @@ export const AddToCartModal = (props) => {
   },[cartItems, dish, oldDish])
 
   useEffect(() => {
-    let status = false;
+    let status = false || dish?.product?.menu_option_categories.length === 0;
     dish?.product?.menu_option_categories.forEach((category)=>{
       if (category.selectOption) {
         status = true;
