@@ -94,7 +94,7 @@ export const AddToCartModal = (props) => {
 
   const addToCart = () => {
 
-    const id = GenerateUniqueId(dish.product);
+    const id = GenerateUniqueId(dish);
     const isExistingItem = CheckforMatch(id, cartItems);
     if (isExistingItem) {
       const existingItem = GetItemFromId(id, cartItems);
