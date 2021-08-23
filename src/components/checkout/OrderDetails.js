@@ -32,7 +32,7 @@ export const OrderDetails = ({ cartDetails }) => {
                       26”, deep-pan, thin-crust
                     </span>
                   </td>
-                  <td className="price">${item?.cost.toFixed(2)}</td>
+                  <td className="price">${item?.cost?.toFixed(2)}</td>
                   <td className="actions">
                     <a
                       href="#product-modal"

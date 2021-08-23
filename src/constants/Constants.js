@@ -120,3 +120,14 @@ export const cities = {
   status_code: "200",
   message: "Cities",
 };
+
+export const timeSlots = [
+  {id : 1, value: '5.30pm'},
+  {id : 2, value: '6.00pm'},
+  {id : 3, value: '6.30pm'},
+  {id : 4, value: '7.00pm'},
+  {id : 5, value: '7.30pm'},
+  {id : 6, value: '8.00pm'},
+  {id : 7, value: '8.30pm'},
+  {id : 8, value: '9.00pm'}
+]

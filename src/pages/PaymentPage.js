@@ -9,7 +9,7 @@ import { PaymentForm } from "../components/checkout/PaymentForm";
 
 export const PaymentPage = (props) => {
     const location = useLocation();
-    let order_id = location.state.order_id;
+    let order_id = location.state.orderId;
   return (
     <div id="body-wrapper" className="">
       <Header />
