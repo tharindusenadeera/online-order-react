@@ -30,6 +30,9 @@ export const CheckoutForm = ({ cartDetails }) => {
   const [modelStatus, setModalStatus] = useState("");
   const [isSame, setIsSame] = useState(false);
   const [deliveryTime, setDeliveryTime] = useState("");
+  const emailRegex = RegExp(
+    '^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'
+  );
 
   const validation = (data) => {
     let errors = {};
@@ -51,6 +54,8 @@ export const CheckoutForm = ({ cartDetails }) => {
       errors.deliveryPhoneNumber = "Required !";
     } else if (data.order_type == "deliver" && !data.delivery_city_id) {
       errors.city = "Required !";
+    } else if (!emailRegex.test(data.email)) {
+      errors.email = "Invalid Email !";
     }
 
     setErrorObj(errors);
@@ -193,7 +198,11 @@ export const CheckoutForm = ({ cartDetails }) => {
             <div className="select-container">
               <select
                 className="form-control"
-                onChange={(e) => setCity(e.target.value)}
+                onChange={(e) => {
+                  console.log("e", e.target.value);
+                  setCity(e.target.value);
+                  setErrorObj({});
+                }}
               >
                 <option value=""></option>
                 {cities?.data.map((item, key) => {
@@ -242,6 +251,7 @@ export const CheckoutForm = ({ cartDetails }) => {
                 className="form-control"
                 onChange={(e) => {
                   setMealType(e.target.value);
+                  setErrorObj({});
                 }}
               >
                 <option value={""}></option>
@@ -260,8 +270,16 @@ export const CheckoutForm = ({ cartDetails }) => {
             <input
               type="email"
               className="form-control"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setErrorObj({});
+              }}
             />
+            {errorObj.email ? (
+              <span style={{ color: "red" }}>{errorObj.email}</span>
+            ) : (
+              <Fragment />
+            )}
           </div>
         </div>
 
