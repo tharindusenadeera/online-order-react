@@ -144,23 +144,8 @@ export const CheckoutForm = ({ cartDetails }) => {
             setVisible(true);
           });
       } else {
-        history.push({
-          pathname: "/payment",
-          state: { orderId: 1 },
-        });
+
       }
-      dispatch(addDish([]));
-      dispatch(updateDish([]));
-      // } else {
-      //   console.log('res.data.status');
-      //   setModalStatus("error");
-      //   setVisible(true);
-      // }
-      // })
-      // .catch((error) => {
-      //   setModalStatus("error");
-      //   setVisible(true);
-      // });
     }
   };
 
