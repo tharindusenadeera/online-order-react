@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Fragment } from "react";
 import { getCategories } from "../../api/Categories";
+import { Link } from "react-scroll";
 
 export const MenuItemNavigation = (props) => {
   const { categories } = props;
@@ -14,7 +15,9 @@ export const MenuItemNavigation = (props) => {
               categories.map((category, index) => {
                 return (
                   <li key={category.id}>
-                    <a href={index}>{category.name}</a>
+                    <Link to={`ref_${category.id}`} spy={true} smooth={true}>
+                      {category.name}
+                    </Link>
                   </li>
                 );
               })}

@@ -64,6 +64,7 @@ export const MenuItemPage = (props) => {
                 {categories.map((category) => {
                   return (
                     <div className="menu-category" key={category.id}>
+                      <div id={`ref_${category.id}`} />
                       <div className="menu-category-title">
                         <div
                           className="bg-image"
