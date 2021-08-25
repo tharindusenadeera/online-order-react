@@ -143,6 +143,8 @@ export const CheckoutForm = ({ cartDetails }) => {
             setModalStatus("error");
             setVisible(true);
           });
+      } else {
+
       }
     }
   };
@@ -416,17 +418,6 @@ export const CheckoutForm = ({ cartDetails }) => {
           <i className="ti ti-wallet mr-3 text-primary"></i>Payment
         </h4>
         <div className="row text-lg">
-          {/* <div className="col-md-4 col-sm-6 form-group">
-            <label className="custom-control custom-radio">
-              <input
-                type="radio"
-                name="payment_type"
-                className="custom-control-input"
-              />
-              <span className="custom-control-indicator"></span>
-              <span className="custom-control-description">PayPal</span>
-            </label>
-          </div> */}
           <div className="radio col-md-12 col-sm-12 form-group">
             <RadioGroupStyle>
               <Radio.Group
@@ -437,56 +428,7 @@ export const CheckoutForm = ({ cartDetails }) => {
                 <Radio value={"card"}>Pay at Store</Radio>
               </Radio.Group>
             </RadioGroupStyle>
-            {/* <div className="col-md-8 col-sm-8 form-group">
-              <label className="custom-control custom-radio">
-                <input
-                  type="radio"
-                  name="payment_type"
-                  className="custom-control-input"
-                  disabled={false}
-                  value="online"
-                  checked={paymentType.selectedOption == "online"}
-                  onChange={(e) => handleRadio(e.target.value)}
-                />
-                <span className="custom-control-indicator"></span>
-                <span className="custom-control-description">
-                  Online Payment{" "}
-                  <span style={{ fontSize: "12px" }}>(Coming soon ...)</span>
-                </span>
-              </label>
-            </div>
-            <div className="col-md-8 col-sm-8 form-group">
-              <label className="custom-control custom-radio">
-                <input
-                  type="radio"
-                  name="payment_type"
-                  className="custom-control-input"
-                  value="card"
-                  checked={paymentType.selectedOption == "card"}
-                  onChange={(e) => handleRadio(e.target.value)}
-                />
-                <span className="custom-control-indicator"></span>
-                <span className="custom-control-description">Credit Card </span>
-                <div style={{ fontSize: "12px" }}>
-                  (Call restaurant for card payments... 0889008068)
-                </div>
-              </label>
-            </div> */}
           </div>
-
-          {/* <div className="col-md-4 col-sm-6 form-group">
-            <label className="custom-control custom-radio">
-              <input
-                type="radio"
-                name="payment_type"
-                className="custom-control-input"
-              />
-              <span className="custom-control-indicator"></span>
-              <span className="custom-control-description">
-                Cash on Delivery
-              </span>
-            </label>
-          </div> */}
           {errorObj.all || errorObj.paymentType ? (
             <span style={{ color: "red" }}>Required</span>
           ) : (
