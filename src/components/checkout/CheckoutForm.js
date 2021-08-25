@@ -30,9 +30,11 @@ export const CheckoutForm = ({ cartDetails }) => {
   const [modelStatus, setModalStatus] = useState("");
   const [isSame, setIsSame] = useState(false);
   const [deliveryTime, setDeliveryTime] = useState("");
+  const emailRegex = RegExp(
+    '^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'
+  );
 
   const validation = (data) => {
-    console.log("data", data);
     let errors = {};
     if (!data.first_name) {
       errors.firstName = "Required !";
@@ -52,6 +54,8 @@ export const CheckoutForm = ({ cartDetails }) => {
       errors.deliveryPhoneNumber = "Required !";
     } else if (data.order_type == "deliver" && !data.delivery_city_id) {
       errors.city = "Required !";
+    } else if (!emailRegex.test(data.email)) {
+      errors.email = "Invalid Email !";
     }
 
     setErrorObj(errors);
@@ -115,34 +119,48 @@ export const CheckoutForm = ({ cartDetails }) => {
     } else {
       let errors = validation(obj);
       if (!Object.keys(errors).length) {
-        // addOrder(obj)
-        //   .then((res) => {
-        //     if (res.data.status == "success") {
-        console.log("Order success");
-        if (paymentType.selectedOption == "card") {
-          console.log("Order done");
-          history.push({
-            pathname: "/confirmed",
+        addOrder(obj)
+          .then((res) => {
+            if (res.data.status == "success") {
+              dispatch(addDish([]));
+              dispatch(updateDish([]));
+              if (paymentType.selectedOption == "card") {
+                history.push({
+                  pathname: "/confirmed",
+                });
+              } else {
+                history.push({
+                  pathname: "/payment",
+                  state: { orderId: res?.data?.data?.order_id },
+                });
+              }
+            } else {
+              setModalStatus("error");
+              setVisible(true);
+            }
+          })
+          .catch((error) => {
+            setModalStatus("error");
+            setVisible(true);
           });
-        } else {
-          history.push({
-            pathname: "/payment",
-            state: { orderId: 1 },
-          });
-        }
-        dispatch(addDish([]));
-        dispatch(updateDish([]));
-        // } else {
-        //   console.log('res.data.status');
-        //   setModalStatus("error");
-        //   setVisible(true);
-        // }
-        // })
-        // .catch((error) => {
-        //   setModalStatus("error");
-        //   setVisible(true);
-        // });
+      } else {
+        history.push({
+          pathname: "/payment",
+          state: { orderId: 1 },
+        });
       }
+      dispatch(addDish([]));
+      dispatch(updateDish([]));
+      // } else {
+      //   console.log('res.data.status');
+      //   setModalStatus("error");
+      //   setVisible(true);
+      // }
+      // })
+      // .catch((error) => {
+      //   setModalStatus("error");
+      //   setVisible(true);
+      // });
     }
   };
 
@@ -158,7 +176,7 @@ export const CheckoutForm = ({ cartDetails }) => {
   const handleRadio = (e) => {
     setPaymentType({ selectedOption: e });
   };
-  console.log("paymentType.selectedOption", paymentType.selectedOption);
+
   return (
     <div className="col-xl-8 col-lg-7 order-lg-first">
       <div className="bg-white p-4 p-md-5 mb-4">
@@ -197,7 +215,11 @@ export const CheckoutForm = ({ cartDetails }) => {
             <div className="select-container">
               <select
                 className="form-control"
-                onChange={(e) => setCity(e.target.value)}
+                onChange={(e) => {
+                  console.log("e", e.target.value);
+                  setCity(e.target.value);
+                  setErrorObj({});
+                }}
               >
                 <option value=""></option>
                 {cities?.data.map((item, key) => {
@@ -246,6 +268,7 @@ export const CheckoutForm = ({ cartDetails }) => {
                 className="form-control"
                 onChange={(e) => {
                   setMealType(e.target.value);
+                  setErrorObj({});
                 }}
               >
                 <option value={""}></option>
@@ -264,8 +287,16 @@ export const CheckoutForm = ({ cartDetails }) => {
             <input
               type="email"
               className="form-control"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setErrorObj({});
+              }}
             />
+            {errorObj.email ? (
+              <span style={{ color: "red" }}>{errorObj.email}</span>
+            ) : (
+              <Fragment />
+            )}
           </div>
         </div>
 
@@ -402,17 +433,6 @@ export const CheckoutForm = ({ cartDetails }) => {
           <i className="ti ti-wallet mr-3 text-primary"></i>Payment
         </h4>
         <div className="row text-lg">
-          {/* <div className="col-md-4 col-sm-6 form-group">
-            <label className="custom-control custom-radio">
-              <input
-                type="radio"
-                name="payment_type"
-                className="custom-control-input"
-              />
-              <span className="custom-control-indicator"></span>
-              <span className="custom-control-description">PayPal</span>
-            </label>
-          </div> */}
           <div className="radio col-md-12 col-sm-12 form-group">
             <RadioGroupStyle>
               <Radio.Group
@@ -423,56 +443,7 @@ export const CheckoutForm = ({ cartDetails }) => {
                 <Radio value={"card"}>Pay at Store</Radio>
               </Radio.Group>
             </RadioGroupStyle>
-            {/* <div className="col-md-8 col-sm-8 form-group">
-              <label className="custom-control custom-radio">
-                <input
-                  type="radio"
-                  name="payment_type"
-                  className="custom-control-input"
-                  disabled={false}
-                  value="online"
-                  checked={paymentType.selectedOption == "online"}
-                  onChange={(e) => handleRadio(e.target.value)}
-                />
-                <span className="custom-control-indicator"></span>
-                <span className="custom-control-description">
-                  Online Payment{" "}
-                  <span style={{ fontSize: "12px" }}>(Coming soon ...)</span>
-                </span>
-              </label>
-            </div>
-            <div className="col-md-8 col-sm-8 form-group">
-              <label className="custom-control custom-radio">
-                <input
-                  type="radio"
-                  name="payment_type"
-                  className="custom-control-input"
-                  value="card"
-                  checked={paymentType.selectedOption == "card"}
-                  onChange={(e) => handleRadio(e.target.value)}
-                />
-                <span className="custom-control-indicator"></span>
-                <span className="custom-control-description">Credit Card </span>
-                <div style={{ fontSize: "12px" }}>
-                  (Call restaurant for card payments... 0889008068)
-                </div>
-              </label>
-            </div> */}
           </div>
-
-          {/* <div className="col-md-4 col-sm-6 form-group">
-            <label className="custom-control custom-radio">
-              <input
-                type="radio"
-                name="payment_type"
-                className="custom-control-input"
-              />
-              <span className="custom-control-indicator"></span>
-              <span className="custom-control-description">
-                Cash on Delivery
-              </span>
-            </label>
-          </div> */}
           {errorObj.all || errorObj.paymentType ? (
             <span style={{ color: "red" }}>Required</span>
           ) : (

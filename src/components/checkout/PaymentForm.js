@@ -132,18 +132,19 @@ const CheckoutForm = ({ order_id }) => {
       setError(payload.error);
     } else {
       setPaymentMethod(payload.paymentMethod);
-      orderPayment({
+      let obj = {
         payment_type: "stripe",
         stripeToken: payload.paymentMethod.id,
         order_id: order_id,
-      }).then((res) => {
+      };
+      orderPayment(obj).then((res) => {
         console.log("res ---", res);
         if (res.data.status == "success") {
           history.push({
             pathname: "/confirmed",
           });
         } else {
-          setModelStatus("error")
+          setModelStatus("error");
           setErrorPopupVisible(true);
         }
       });
