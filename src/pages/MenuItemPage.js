@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Fragment } from "react";
 import { getCategories } from "../api/Categories";
 import { productsList } from "../api/products";
 import { Footer } from "../components/common/Footer";
@@ -81,35 +82,41 @@ export const MenuItemPage = (props) => {
                       </div>
 
                       <div className="menu-category-content">
-                        {products.map((product) => {
-                          return product.menu_category === category.id ? (
-                            <div
-                              className="menu-item menu-list-item"
-                              key={product.id}
-                            >
-                              <div className="row align-items-center">
-                                <div className="col-sm-6 mb-2 mb-sm-0">
-                                  <h6 className="mb-0">{product.name}</h6>
-                                  <span className="text-muted text-sm">
-                                    {/* Beef, cheese, potato, onion, fries */}
-                                  </span>
+                        {products?.length > 0 ? (
+                          <Fragment>
+                            {products.map((product) => {
+                              return product.menu_category === category.id ? (
+                                <div
+                                  className="menu-item menu-list-item"
+                                  key={product.id}
+                                >
+                                  <div className="row align-items-center">
+                                    <div className="col-sm-6 mb-2 mb-sm-0">
+                                      <h6 className="mb-0">{product.name}</h6>
+                                      <span className="text-muted text-sm">
+                                        {/* Beef, cheese, potato, onion, fries */}
+                                      </span>
+                                    </div>
+                                    <div className="col-sm-6 d-flex align-items-center justify-content-end">
+                                      <span className="text-md mr-4">
+                                        <span className="text-muted">
+                                          from&nbsp;
+                                        </span>{" "}
+                                        $
+                                        <span data-product-base-price>
+                                          &nbsp;{product.price}
+                                        </span>
+                                      </span>
+                                      <AddToCartModal product={product} />
+                                    </div>
+                                  </div>
                                 </div>
-                                <div className="col-sm-6 d-flex align-items-center justify-content-end">
-                                  <span className="text-md mr-4">
-                                    <span className="text-muted">
-                                      from&nbsp;
-                                    </span>{" "}
-                                    $
-                                    <span data-product-base-price>
-                                      &nbsp;{product.price}
-                                    </span>
-                                  </span>
-                                  <AddToCartModal product={product} />
-                                </div>
-                              </div>
-                            </div>
-                          ) : null;
-                        })}
+                              ) : null;
+                            })}{" "}
+                          </Fragment>
+                        ) : (
+                          <Fragment />
+                        )}
                       </div>
                     </div>
                   );
