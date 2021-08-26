@@ -1,10 +1,5 @@
 import axios from "axios";
 
 export const getCategories = () => {
-    return axios.get(`${process.env.REACT_APP_API_URL}/categories`, {
-      headers: {
-        'Access-Control-Allow-Origin' : '*'
-      }
-    });
-  };
-
+  return axios.get(`${process.env.REACT_APP_API_URL}/categories`);
+};
