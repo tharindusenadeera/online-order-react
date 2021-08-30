@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "antd";
 import styled from "styled-components";
 import { CartCollapse } from "./addToCart/CartCollapse";
 import theme from "../../utils/theme";
-import {addDish, updateDish, deleteDish}  from "../../actions/Cart";
-import { InputNumber } from 'antd';
-import { GenerateUniqueId, CheckforMatch, GetItemFromId} from '../common/generateUniqueId';
+import { addDish, updateDish, deleteDish } from "../../actions/Cart";
+import { InputNumber } from "antd";
+import {
+  GenerateUniqueId,
+  CheckforMatch,
+  GetItemFromId,
+} from "../common/generateUniqueId";
+import "antd/dist/antd.css";
+import { Input } from "antd";
 
 const ModalWrapper = styled.div``;
 
@@ -23,16 +29,18 @@ const ContentWrapper = styled.div`
 `;
 
 export const AddToCartModal = (props) => {
-  const {product, oldDish, resetEditCart} = props;
-
+  const { product, oldDish, resetEditCart } = props;
+  const { TextArea } = Input;
+  const [additionalComment, setAdditionalComment] = useState("");
   const initialDish = {
     product: oldDish ? oldDish.product : product,
     addition: oldDish ? oldDish.addition : [],
     other: oldDish ? oldDish.other : {},
     quantity: oldDish ? oldDish.quantity : 1,
     cost: oldDish ? oldDish.cost : parseFloat(product.price),
-    addonCost: oldDish ? oldDish.addonCost : 0
-  }
+    addonCost: oldDish ? oldDish.addonCost : 0,
+    menu_item_comment: additionalComment,
+  };
   const initialModalVisiblity = oldDish ? true : false;
   const initialQuantity = oldDish ? oldDish.product.qty : product.qty;
 
@@ -41,32 +49,45 @@ export const AddToCartModal = (props) => {
   const [isCategorySelect, setIsCategorySelect] = useState(false);
   const [avalableQuantity, setAvailableQuantity] = useState(initialQuantity);
 
-  const cartItems = useSelector(state => state.cart);
+  const cartItems = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (props?.oldDish) {
+      setAdditionalComment(props.oldDish.menu_item_comment);
+    }
+  }, [props]);
 
   useEffect(() => {
     let existingQuantity = dish.product.qty;
 
-    cartItems?.forEach(cartItem => {
+    cartItems?.forEach((cartItem) => {
       if (dish.product.id === cartItem.product.id) {
-        existingQuantity-= cartItem.quantity;
+        existingQuantity -= cartItem.quantity;
       }
-    })
+    });
     // oldDish means edit mode
-    const remainingQuantity = oldDish ? existingQuantity + oldDish.quantity : existingQuantity;
+    const remainingQuantity = oldDish
+      ? existingQuantity + oldDish.quantity
+      : existingQuantity;
 
     setAvailableQuantity(remainingQuantity);
-  },[cartItems, dish, oldDish])
+  }, [cartItems, dish, oldDish]);
 
   useEffect(() => {
     let status = false || dish?.product?.menu_option_categories.length === 0;
-    dish?.product?.menu_option_categories.forEach((category)=>{
+    dish?.product?.menu_option_categories.forEach((category) => {
       if (category.selectOption) {
         status = true;
       }
-    })
+    });
     setIsCategorySelect(status);
-  },[dish])
+    if (dish?.menu_item_comment) {
+      console.log("Here");
+      console.log(dish.menu_item_comment);
+      setAdditionalComment(dish.menu_item_comment);
+    }
+  }, [dish]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -79,21 +100,28 @@ export const AddToCartModal = (props) => {
   const handleCancel = () => {
     setIsModalVisible(false);
 
-    if (resetEditCart instanceof Function){
+    if (resetEditCart instanceof Function) {
       resetEditCart();
     }
   };
 
   const updateDishFunc = (updatedDish) => {
     setDish(updatedDish);
-  }
+  };
+
+  const updateAdditionalComment = (e) => {
+    setAdditionalComment(e.target.value);
+  };
 
   const onChangeQuantity = (qty) => {
-    setDish({...dish, quantity: qty, cost: qty * (parseFloat(dish.product.price) + dish.addonCost)});
-  }
+    setDish({
+      ...dish,
+      quantity: qty,
+      cost: qty * (parseFloat(dish.product.price) + dish.addonCost),
+    });
+  };
 
   const addToCart = () => {
-
     const id = GenerateUniqueId(dish);
     const isExistingItem = CheckforMatch(id, cartItems);
     if (isExistingItem) {
@@ -102,13 +130,16 @@ export const AddToCartModal = (props) => {
       // check if the existing item id is same as once before edit
       const isSameItemEdit = oldDish ? existingItem?.id === oldDish?.id : false;
 
-      const newQuantity = isSameItemEdit ? dish.quantity : existingItem.quantity + dish.quantity;
+      const newQuantity = isSameItemEdit
+        ? dish.quantity
+        : existingItem.quantity + dish.quantity;
       const updatedItem = {
         ...existingItem,
         cost: newQuantity * (parseFloat(dish.product.price) + dish.addonCost),
         quantity: newQuantity,
         addition: dish.addition,
         other: dish.other,
+        menu_item_comment: additionalComment,
       };
 
       dispatch(updateDish(updatedItem));
@@ -117,9 +148,10 @@ export const AddToCartModal = (props) => {
       if (oldDish && !isSameItemEdit) {
         dispatch(deleteDish(oldDish));
       }
-
     } else {
-      dispatch(addDish({...dish, id: id}));
+      dispatch(
+        addDish({ ...dish, id: id, menu_item_comment: additionalComment })
+      );
       // if the new item is different from old (key changed) then prev should delete
       if (oldDish) {
         dispatch(deleteDish(oldDish));
@@ -129,72 +161,95 @@ export const AddToCartModal = (props) => {
     setIsModalVisible(false);
     setDish(initialDish);
 
-    if (resetEditCart instanceof Function){
+    if (resetEditCart instanceof Function) {
       resetEditCart();
     }
-  }
+  };
 
-  const ModalContent = () => (
-    <ContentWrapper>
-      <div className="modal-content">
-        <div className="modal-header modal-header-lg dark bg-dark">
-          <div className="bg-image">
-            <img
-              // src="http://assets.suelo.pl/soup/img/photos/modal-add.jpg"
-              src={process.env.REACT_APP_IMAGE_URL + dish.product.main_image}
-              alt=""
-            />
-          </div>
-          <h4 className="modal-title">Specify your dish</h4>
-        </div>
-        <div className="modal-product-details">
-          <div className="row align-items-center">
-            <div className="col-9">
-              <h6 className="mb-1 product-modal-name">{dish.product.name}</h6>
-              {/* <span className="text-muted product-modal-ingredients">
-                Pasta, Cheese, Tomatoes, Olives
-              </span> */}
-            </div>
-            <div className="col-3 text-lg text-right">{dish.cost.toFixed(2)}
-              $<span className="product-modal-price"></span>
-            </div>
-          </div>
-        </div>
+  // const ModalContent = () => (
+  //   <ContentWrapper>
+  //     <div className="modal-content">
+  //       <div className="modal-header modal-header-lg dark bg-dark">
+  //         <div className="bg-image">
+  //           <img
+  //             // src="http://assets.suelo.pl/soup/img/photos/modal-add.jpg"
+  //             src={process.env.REACT_APP_IMAGE_URL + dish.product.main_image}
+  //             alt=""
+  //           />
+  //         </div>
+  //         <h4 className="modal-title">Specify your dish</h4>
+  //       </div>
 
-        <div className="modal-body panel-details-container">
-          <CartCollapse updateDish={updateDishFunc} product={dish.product} dish={dish}/>
-        </div>
+  //       <div className="modal-product-details">
+  //         <div className="row align-items-center">
+  //           <div className="col-9">
+  //             <h6 className="mb-1 product-modal-name">{dish.product.name}</h6>
+  //             {/* <span className="text-muted product-modal-ingredients">
+  //               Pasta, Cheese, Tomatoes, Olives
+  //             </span> */}
+  //           </div>
+  //           <div className="col-3 text-lg text-right">
+  //             {dish.cost.toFixed(2)}$
+  //             <span className="product-modal-price"></span>
+  //           </div>
+  //         </div>
+  //       </div>
 
-        <div className="modal-btn btn btn-block btn-lg" style={{background: '#25282a'}}>
-          <InputNumber size="large" min={1} max={avalableQuantity} defaultValue={1} value={dish.quantity} onChange={onChangeQuantity} />
-        </div>
+  //       <div className="modal-body panel-details-container">
+  //         <CartCollapse
+  //           updateDish={updateDishFunc}
+  //           product={dish.product}
+  //           dish={dish}
+  //         />
+  //         <span>Addtional Comments</span>
+  //         <form>
+  //           <TextArea
+  //             // value={additionalComment}
+  //             onChange={updateAdditionalComment}
+  //           />
+  //         </form>
+  //       </div>
 
-        <button
-          type="button"
-          disabled={!isCategorySelect}
-          className="modal-btn btn btn-secondary btn-block btn-lg"
-          data-action="add-to-cart"
-          onClick={addToCart}
-        >
-          <span>Add to Cart</span>
-        </button>
-        {/* <button
-          type="button"
-          className="modal-btn btn btn-secondary btn-block btn-lg"
-          data-action="update-cart"
-        >
-          <span>Update</span>
-        </button> */}
-      </div>
-    </ContentWrapper>
-  );
+  //       <div
+  //         className="modal-btn btn btn-block btn-lg"
+  //         style={{ background: "#25282a" }}
+  //       >
+  //         <InputNumber
+  //           size="large"
+  //           min={1}
+  //           max={avalableQuantity}
+  //           defaultValue={1}
+  //           value={dish.quantity}
+  //           onChange={onChangeQuantity}
+  //         />
+  //       </div>
+
+  //       <button
+  //         type="button"
+  //         disabled={!isCategorySelect}
+  //         className="modal-btn btn btn-secondary btn-block btn-lg"
+  //         data-action="add-to-cart"
+  //         onClick={addToCart}
+  //       >
+  //         <span>Add to Cart</span>
+  //       </button>
+  //       {/* <button
+  //         type="button"
+  //         className="modal-btn btn btn-secondary btn-block btn-lg"
+  //         data-action="update-cart"
+  //       >
+  //         <span>Update</span>
+  //       </button> */}
+  //     </div>
+  //   </ContentWrapper>
+  // );
 
   return (
     <ModalWrapper>
       <button
         type="link"
         className="btn btn-outline-secondary btn-sm"
-        disabled = {avalableQuantity <= 0}
+        disabled={avalableQuantity <= 0}
         onClick={showModal}
       >
         <span>ADD TO CART</span>
@@ -207,7 +262,84 @@ export const AddToCartModal = (props) => {
         className="ant-custom-modal"
         footer={null}
       >
-        <ModalContent />
+        <ContentWrapper>
+          <div className="modal-content">
+            <div className="modal-header modal-header-lg dark bg-dark">
+              <div className="bg-image">
+                <img
+                  // src="http://assets.suelo.pl/soup/img/photos/modal-add.jpg"
+                  src={
+                    process.env.REACT_APP_IMAGE_URL + dish.product.main_image
+                  }
+                  alt=""
+                />
+              </div>
+              <h4 className="modal-title">Specify your dish</h4>
+            </div>
+
+            <div className="modal-product-details">
+              <div className="row align-items-center">
+                <div className="col-9">
+                  <h6 className="mb-1 product-modal-name">
+                    {dish.product.name}
+                  </h6>
+                  {/* <span className="text-muted product-modal-ingredients">
+                Pasta, Cheese, Tomatoes, Olives
+              </span> */}
+                </div>
+                <div className="col-3 text-lg text-right">
+                  {dish.cost.toFixed(2)}$
+                  <span className="product-modal-price"></span>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-body panel-details-container">
+              <CartCollapse
+                updateDish={updateDishFunc}
+                product={dish.product}
+                dish={dish}
+              />
+              <span>Addtional Comments</span>
+
+              <TextArea
+                value={additionalComment}
+                onChange={updateAdditionalComment}
+              />
+            </div>
+
+            <div
+              className="modal-btn btn btn-block btn-lg"
+              style={{ background: "#25282a" }}
+            >
+              <InputNumber
+                size="large"
+                min={1}
+                max={avalableQuantity}
+                defaultValue={1}
+                value={dish.quantity}
+                onChange={onChangeQuantity}
+              />
+            </div>
+
+            <button
+              type="button"
+              disabled={!isCategorySelect}
+              className="modal-btn btn btn-secondary btn-block btn-lg"
+              data-action="add-to-cart"
+              onClick={addToCart}
+            >
+              <span>Add to Cart</span>
+            </button>
+            {/* <button
+          type="button"
+          className="modal-btn btn btn-secondary btn-block btn-lg"
+          data-action="update-cart"
+        >
+          <span>Update</span>
+        </button> */}
+          </div>
+        </ContentWrapper>
       </Modal>
     </ModalWrapper>
   );

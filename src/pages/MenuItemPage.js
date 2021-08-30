@@ -4,13 +4,37 @@ import { getCategories } from "../api/Categories";
 import { productsList } from "../api/products";
 import { Footer } from "../components/common/Footer";
 import { Header } from "../components/common/Header";
+import { useSelector, useDispatch } from "react-redux";
 import { MenuItemNavigation } from "../components/common/MenuItemNavigation";
 import { AddToCartModal } from "../components/items/AddToCartModal";
 import * as Constants from "../constants/Constants";
+import { addDishesFromCache } from "../actions/Cart";
+
+function putToCache(items) {
+  localStorage.setItem("cart", items);
+}
 
 export const MenuItemPage = (props) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const cartItems = useSelector((state) => state.cart);
+  const [updateCart, setUpdateCart] = useState(true);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      const items = JSON.stringify(cartItems);
+      putToCache(items);
+    }
+  }, [cartItems]);
+
+  useEffect(() => {
+    const cart = localStorage.getItem("cart");
+    if (cart && updateCart) {
+      const cartObjects = JSON.parse(cart);
+      dispatch(addDishesFromCache(cartObjects));
+      setUpdateCart(false);
+    }
+  });
 
   const CategoryHeading = {
     fontWeight: "100",

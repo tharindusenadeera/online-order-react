@@ -1,14 +1,15 @@
 //---------- Order ------------------//
-export const ORDER = 'ORDER';
-export const TABLE_NUMBER = 'TABLE_NUMBER';
+export const ORDER = "ORDER";
+export const TABLE_NUMBER = "TABLE_NUMBER";
 
 //---------- Products ------------------//
-export const SAVE_PRODUCT = 'SAVE_PRODUCT';
+export const SAVE_PRODUCT = "SAVE_PRODUCT";
 
 //---------- Categories ------------------//
-export const ADD_CATEGORIES= 'ADD_CATEGORIES';
+export const ADD_CATEGORIES = "ADD_CATEGORIES";
 
 //---------- Cart -----------------------//
-export const ADD_DISH ='ADD_DISH';
-export const UPDATE_DISH = 'UPDATE_DISH';
-export const DELETE_DISH = 'DELETE_DISH';
+export const ADD_DISH = "ADD_DISH";
+export const UPDATE_DISH = "UPDATE_DISH";
+export const DELETE_DISH = "DELETE_DISH";
+export const ADD_ITEMS_TO_CART = "ADD_ITEMS_TO_CART";

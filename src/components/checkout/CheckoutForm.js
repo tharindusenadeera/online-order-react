@@ -30,6 +30,7 @@ export const CheckoutForm = ({ cartDetails }) => {
   const [modelStatus, setModalStatus] = useState("");
   const [isSame, setIsSame] = useState(false);
   const [deliveryTime, setDeliveryTime] = useState("");
+
   const emailRegex = RegExp(
     '^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'
   );
@@ -84,6 +85,7 @@ export const CheckoutForm = ({ cartDetails }) => {
         qty: qty,
         menu_option_category_menu_option_id: selectedCategory,
         addon_id: item.addition,
+        menu_item_comment: item.menu_item_comment,
       });
     });
 
@@ -144,7 +146,6 @@ export const CheckoutForm = ({ cartDetails }) => {
             setVisible(true);
           });
       } else {
-
       }
     }
   };
