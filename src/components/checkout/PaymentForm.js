@@ -17,6 +17,7 @@ import { ModalPopup } from "../common/ModalPopup";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
+  hidePostalCode: true,
   style: {
     base: {
       iconColor: "black",
