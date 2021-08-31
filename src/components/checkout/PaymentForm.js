@@ -121,25 +121,27 @@ const CheckoutForm = ({ order_id }) => {
       setProcessing(true);
     }
 
-    const payload = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-      //   billing_details: billingDetails,
-    });
+    // const payload = await stripe.createPaymentMethod({
+    //   type: "card",
+    //   card: elements.getElement(CardElement),
+    //   //   billing_details: billingDetails,
+    // });
+
+    const card = elements.getElement(CardElement);
+    const result = await stripe.createToken(card);
 
     setProcessing(false);
 
-    if (payload.error) {
-      setError(payload.error);
+    if (result.error) {
+      setError(result.error);
     } else {
-      setPaymentMethod(payload.paymentMethod);
+      setPaymentMethod(result.token);
       let obj = {
         payment_type: "stripe",
-        stripeToken: payload.paymentMethod.id,
+        stripeToken: result.token.id,
         order_id: order_id,
       };
       orderPayment(obj).then((res) => {
-        console.log("res ---", res);
         if (res.data.status == "success") {
           history.push({
             pathname: "/confirmed",
