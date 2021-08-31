@@ -18,7 +18,7 @@ export const Header = (props) => {
               {/* Logo */}
               <div className="module module-logo dark">
                 <a href="/">
-                  <img src="assets/img/logo-light.svg" alt="" width="88" />
+                  <img src="assets/img/SP_LIGHT_NEW-1.svg" alt="" width="150" />
                 </a>
               </div>
             </div>

@@ -8,7 +8,7 @@ import { ModalPopup } from "../common/ModalPopup";
 import { Checkbox, Radio } from "antd";
 import { RadioGroupStyle } from "../../assests/styles/RadioGroupStyle";
 import "react-phone-input-2/lib/style.css";
-import { addDish, updateDish } from "../../actions/Cart";
+import { addDish, updateDish, addDishesFromCache } from "../../actions/Cart";
 
 export const CheckoutForm = ({ cartDetails }) => {
   const history = useHistory();
@@ -126,6 +126,7 @@ export const CheckoutForm = ({ cartDetails }) => {
             if (res.data.status == "success") {
               dispatch(addDish([]));
               dispatch(updateDish([]));
+              dispatch(addDishesFromCache([]));
               if (paymentType.selectedOption == "card") {
                 history.push({
                   pathname: "/confirmed",
